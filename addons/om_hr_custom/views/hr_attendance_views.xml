@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View - Danh sách chấm công -->
+    <record id="view_attendance_tree" model="ir.ui.view">
+        <field name="name">om.hr.attendance.tree</field>
+        <field name="model">om.hr.attendance</field>
+        <field name="arch" type="xml">
+            <tree string="Chấm công" decoration-success="status == 'checked_out' and not is_late and not is_early" decoration-info="status == 'checked_in'" decoration-warning="is_late or is_early" decoration-muted="status == 'absent'">
+                <field name="name" string="Mã"/>
+                <field name="employee_id" string="Nhân viên"/>
+                <field name="date" string="Ngày"/>
+                <field name="check_in" string="Giờ vào"/>
+                <field name="check_out" string="Giờ ra"/>
+                <field name="break_time_display" string="Giờ nghỉ"/>
+                <field name="worked_hours" string="Số giờ làm"/>
+                <field name="is_late" invisible="1"/>
+                <field name="is_early" invisible="1"/>
+                <field name="status" widget="badge" decoration-success="status == 'checked_out' and not is_late and not is_early" decoration-info="status == 'checked_in'" decoration-warning="is_late or is_early" decoration-danger="status in ['absent', 'late']"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View - Form chấm công -->
+    <record id="view_attendance_form" model="ir.ui.view">
+        <field name="name">om.hr.attendance.form</field>
+        <field name="model">om.hr.attendance</field>
+        <field name="arch" type="xml">
+            <form string="Chấm công" class="modern-form">
+                <header>
+                    <field name="status" invisible="1"/>
+                    <button name="action_check_in" string="Chấm công vào" type="object" class="oe_highlight" invisible="check_in"/>
+                    <button name="action_check_out" string="Chấm công ra" type="object" class="oe_highlight" invisible="check_out"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,checked_in,checked_out"/>
+                </header>
+                <sheet>
+                    <!-- Section: Just the Essentials -->
+                    <div class="oe_title">
+                        <h2>Thông tin cơ bản</h2>
+                        <p class="text-muted">Đây là tất cả các trường thông tin cơ bản cho một bản ghi chấm công mới. Nếu bạn muốn thêm chi tiết, bạn có thể dễ dàng truy cập chúng bên dưới hoặc qua điều hướng bên.</p>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Mã chấm công"/>
+                            <field name="employee_id" placeholder="Chọn nhân viên..." options="{'no_create': True}"/>
+                            <field name="date" placeholder="Chọn ngày"/>
+                        </group>
+                        <group>
+                            <field name="check_in" placeholder="Chọn giờ vào"/>
+                            <field name="check_out" placeholder="Chọn giờ ra"/>
+                            <field name="worked_hours" readonly="1" placeholder="Số giờ làm việc"/>
+                        </group>
+                    </group>
+                    <group string="Giờ chuẩn" col="4">
+                        <field name="standard_check_in" readonly="1" string="Giờ vào chuẩn (8h30)"/>
+                        <field name="standard_check_out" readonly="1" string="Giờ ra chuẩn (17h30)"/>
+                        <field name="standard_break_start" readonly="1" string="Giờ nghỉ bắt đầu (12h30)"/>
+                        <field name="standard_break_end" readonly="1" string="Giờ nghỉ kết thúc (13h30)"/>
+                    </group>
+                    <group string="Giờ nghỉ">
+                        <group>
+                            <field name="break_start"/>
+                            <field name="break_end"/>
+                        </group>
+                        <group>
+                            <field name="break_duration" readonly="1"/>
+                            <field name="break_time_display" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Cảnh báo đi muộn/về sớm" invisible="not is_late and not is_early" col="2">
+                        <group>
+                            <field name="late_warning" readonly="1" invisible="not is_late" nolabel="1"/>
+                        </group>
+                        <group>
+                            <field name="early_warning" readonly="1" invisible="not is_early" nolabel="1"/>
+                        </group>
+                    </group>
+                    <group string="Chi tiết đi muộn/về sớm" invisible="not is_late and not is_early">
+                        <group>
+                            <field name="is_late" readonly="1" invisible="not is_late"/>
+                            <field name="late_minutes" readonly="1" string="Số phút đi muộn" invisible="not is_late"/>
+                        </group>
+                        <group>
+                            <field name="is_early" readonly="1" invisible="not is_early"/>
+                            <field name="early_minutes" readonly="1" string="Số phút về sớm" invisible="not is_early"/>
+                        </group>
+                    </group>
+                    <group string="Tóm tắt giờ làm việc">
+                        <field name="time_summary" readonly="1" placeholder="Ví dụ: 8h30 | 17h30 | 12h30-13h30"/>
+                    </group>
+                    <notebook>
+                        <page string="Ghi chú" name="notes">
+                            <field name="notes" placeholder="Nhập ghi chú về chấm công..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Calendar View - Lịch chấm công -->
+    <record id="view_attendance_calendar" model="ir.ui.view">
+        <field name="name">om.hr.attendance.calendar</field>
+        <field name="model">om.hr.attendance</field>
+        <field name="arch" type="xml">
+            <calendar string="Lịch chấm công" date_start="date" color="employee_id" mode="month">
+                <field name="employee_id"/>
+                <field name="check_in"/>
+                <field name="check_out"/>
+                <field name="status"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Search View - Tìm kiếm chấm công -->
+    <record id="view_attendance_search" model="ir.ui.view">
+        <field name="name">om.hr.attendance.search</field>
+        <field name="model">om.hr.attendance</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm chấm công">
+                <field name="name" string="Mã"/>
+                <field name="employee_id" string="Nhân viên"/>
+                <field name="date" string="Ngày"/>
+                <field name="status" string="Trạng thái"/>
+                <filter string="Đã vào" name="checked_in" domain="[('status', '=', 'checked_in')]"/>
+                <filter string="Đã ra" name="checked_out" domain="[('status', '=', 'checked_out')]"/>
+                <filter string="Vắng mặt" name="absent" domain="[('status', '=', 'absent')]"/>
+                <separator/>
+                <filter string="Hôm nay" name="today" domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Tuần này" name="this_week" domain="[('date', '>=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                <filter string="Tháng này" name="this_month" domain="[('date', '>=', (context_today().replace(day=1)).strftime('%Y-%m-%d'))]"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>
+

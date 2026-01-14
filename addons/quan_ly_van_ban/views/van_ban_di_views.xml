@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View - Danh sách văn bản đi -->
+    <record id="view_document_outgoing_tree" model="ir.ui.view">
+        <field name="name">om.document.outgoing.tree</field>
+        <field name="model">om.document.outgoing</field>
+        <field name="arch" type="xml">
+            <tree string="Văn bản đi" decoration-info="status=='draft'" decoration-success="status=='sent'">
+                <field name="number" string="Số đi"/>
+                <field name="name" string="Số văn bản"/>
+                <field name="document_type_id" string="Loại văn bản"/>
+                <field name="date_sent" string="Ngày gửi"/>
+                <field name="recipient" string="Nơi nhận"/>
+                <field name="subject" string="Trích yếu"/>
+                <!-- Tạm thời comment để tránh lỗi khi upgrade. Uncomment sau khi upgrade xong om_hr_custom -->
+                <!-- <field name="contract_id" string="Hợp đồng" optional="hide"/> -->
+                <field name="status" string="Trạng thái" widget="badge" decoration-info="status=='draft'" decoration-success="status=='sent'"/>
+                <field name="priority" string="Ưu tiên" widget="priority"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View - Form văn bản đi -->
+    <record id="view_document_outgoing_form" model="ir.ui.view">
+        <field name="name">om.document.outgoing.form</field>
+        <field name="model">om.document.outgoing</field>
+        <field name="arch" type="xml">
+            <form string="Văn bản đi" class="modern-form">
+                <header>
+                    <button name="action_submit_approval" string="Gửi duyệt" type="object" class="oe_highlight" invisible="status != 'draft'"/>
+                    <button name="action_approved" string="Duyệt" type="object" class="oe_highlight" invisible="status != 'pending_approval'"/>
+                    <button name="%(action_sign_document_wizard)d" string="Ký số" type="action" class="oe_highlight" invisible="status != 'approved' or is_signed"/>
+                    <button name="action_sent" string="Đã gửi" type="object" invisible="status not in ['approved', 'signed']"/>
+                    <button name="action_received" string="Đã nhận" type="object" invisible="status != 'sent'"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,pending_approval,approved,pending_sign,signed,sent,received" statusbar_clickable="1"/>
+                </header>
+                <sheet>
+                    <!-- Section: Just the Essentials -->
+                    <div class="oe_title">
+                        <h2>Thông tin cơ bản</h2>
+                        <p class="text-muted">Đây là tất cả các trường thông tin cơ bản cho một văn bản đi mới. Nếu bạn muốn thêm chi tiết, bạn có thể dễ dàng truy cập chúng bên dưới hoặc qua điều hướng bên.</p>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="number" placeholder="Nhập số văn bản..."/>
+                            <field name="name" placeholder="Nhập tên văn bản..."/>
+                            <field name="document_type_id" placeholder="Chọn loại văn bản..." options="{'no_create': True}"/>
+                            <field name="date_sent" placeholder="Chọn ngày gửi"/>
+                            <field name="date_document" placeholder="Chọn ngày văn bản"/>
+                            <field name="effective_date" placeholder="Chọn ngày hiệu lực"/>
+                            <field name="expiry_date" placeholder="Chọn ngày hết hiệu lực"/>
+                        </group>
+                        <group>
+                            <field name="priority" widget="priority"/>
+                            <field name="sender" placeholder="Nhập người gửi..."/>
+                            <field name="recipient" placeholder="Nhập nơi nhận..."/>
+                            <field name="assigned_employee_id" placeholder="Chọn nhân viên được gán..." options="{'no_create': True}"/>
+                            <!-- Tạm thời comment để tránh lỗi khi upgrade. Uncomment sau khi upgrade xong om_hr_custom -->
+                            <!-- <field name="contract_id" placeholder="Chọn hợp đồng liên quan..." options="{'no_create': True}"/> -->
+                            <field name="is_signed" widget="boolean_toggle"/>
+                            <field name="is_approved" widget="boolean_toggle"/>
+                            <field name="is_expired" widget="boolean_toggle"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="subject" placeholder="Nhập trích yếu văn bản..."/>
+                    </group>
+                    <notebook>
+                        <page string="Tệp đính kèm" name="attachments">
+                            <field name="attachment_ids" widget="many2many_binary"/>
+                        </page>
+                        <page string="Quy trình duyệt" name="approvals">
+                            <field name="approval_count" readonly="1"/>
+                            <field name="approved_count" readonly="1"/>
+                            <field name="approval_ids" nolabel="1">
+                                <tree>
+                                    <field name="sequence"/>
+                                    <field name="approver_id" domain="[('active', '=', True)]" options="{'no_create': True}"/>
+                                    <field name="role"/>
+                                    <field name="state" widget="badge"/>
+                                    <field name="approval_date"/>
+                                    <field name="deadline"/>
+                                    <field name="is_overdue" widget="boolean_toggle"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Chữ ký số" name="signatures">
+                            <field name="signature_count" readonly="1"/>
+                            <field name="signed_count" readonly="1"/>
+                            <field name="signature_ids" nolabel="1">
+                                <tree>
+                                    <field name="signer_id" domain="[('active', '=', True)]" options="{'no_create': True}"/>
+                                    <field name="signature_type"/>
+                                    <field name="state" widget="badge"/>
+                                    <field name="signed_date"/>
+                                    <field name="ip_address"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Lịch sử" name="history">
+                            <field name="history_ids" nolabel="1">
+                                <tree>
+                                    <field name="user_id"/>
+                                    <field name="employee_id"/>
+                                    <field name="action"/>
+                                    <field name="field_name"/>
+                                    <field name="timestamp"/>
+                                    <field name="ip_address"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Ghi chú" name="notes">
+                            <field name="notes" placeholder="Nhập ghi chú về văn bản..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_document_outgoing_search" model="ir.ui.view">
+        <field name="name">om.document.outgoing.search</field>
+        <field name="model">om.document.outgoing</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm văn bản đi">
+                <field name="number"/>
+                <field name="name"/>
+                <field name="recipient"/>
+                <field name="subject"/>
+                <field name="document_type_id"/>
+                <!-- Tạm thời comment để tránh lỗi khi upgrade. Uncomment sau khi upgrade xong om_hr_custom -->
+                <!-- <field name="contract_id"/> -->
+                <filter string="Nháp" name="draft" domain="[('status', '=', 'draft')]"/>
+                <filter string="Chờ duyệt" name="pending_approval" domain="[('status', '=', 'pending_approval')]"/>
+                <filter string="Đã duyệt" name="approved" domain="[('status', '=', 'approved')]"/>
+                <filter string="Chờ ký" name="pending_sign" domain="[('status', '=', 'pending_sign')]"/>
+                <filter string="Đã ký" name="signed" domain="[('status', '=', 'signed')]"/>
+                <filter string="Đã gửi" name="sent" domain="[('status', '=', 'sent')]"/>
+                <filter string="Đã nhận" name="received" domain="[('status', '=', 'received')]"/>
+                <filter string="Hết hiệu lực" name="expired" domain="[('status', '=', 'expired')]"/>
+                <separator/>
+                <filter string="Khẩn cấp" name="urgent" domain="[('priority', '=', 'urgent')]"/>
+                <filter string="Cao" name="high" domain="[('priority', '=', 'high')]"/>
+                <!-- Tạm thời comment để tránh lỗi khi upgrade. Uncomment sau khi upgrade xong om_hr_custom -->
+                <!-- <separator/>
+                <filter string="Có hợp đồng" name="has_contract" domain="[('contract_id', '!=', False)]"/> -->
+            </search>
+        </field>
+    </record>
+</odoo>
+

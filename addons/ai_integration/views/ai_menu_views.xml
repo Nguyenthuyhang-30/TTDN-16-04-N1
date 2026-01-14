@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu chính -->
+    <menuitem id="menu_ai_root"
+              name="AI &amp; API"
+              sequence="100"/>
+
+    <!-- Menu Cấu hình -->
+    <menuitem id="menu_ai_config"
+              name="Cấu hình AI"
+              parent="menu_ai_root"
+              action="ai_integration.action_ai_config"
+              sequence="10"/>
+
+    <!-- Menu AI Tóm tắt văn bản -->
+    <menuitem id="menu_ai_document_summary"
+              name="AI Tóm tắt văn bản"
+              parent="menu_ai_root"
+              action="ai_integration.action_ai_document_summary"
+              sequence="20"/>
+
+    <!-- Menu OCR Bóc tách -->
+    <menuitem id="menu_ai_ocr_extraction"
+              name="OCR Bóc tách dữ liệu"
+              parent="menu_ai_root"
+              action="ai_integration.action_ai_ocr_extraction"
+              sequence="30"/>
+
+    <!-- Menu Trợ lý ảo -->
+    <menuitem id="menu_ai_assistant"
+              name="Trợ lý ảo"
+              parent="menu_ai_root"
+              action="ai_integration.action_ai_assistant_wizard"
+              sequence="40"/>
+
+</odoo>
+

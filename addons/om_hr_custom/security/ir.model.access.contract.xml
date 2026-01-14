@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Security cho Contract - Load sau khi models đã được tạo -->
+    <!-- Odoo tự động tạo external IDs khi models được định nghĩa -->
+    <record id="access_om_hr_contract_user" model="ir.model.access">
+        <field name="name">om.hr.contract.user</field>
+        <field name="model_id" ref="om_hr_custom.model_om_hr_contract"/>
+        <field name="group_id" ref="base.group_user"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+</odoo>
+

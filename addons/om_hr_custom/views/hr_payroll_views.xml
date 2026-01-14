@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View - Danh sách bảng lương -->
+    <record id="view_payroll_tree" model="ir.ui.view">
+        <field name="name">om.hr.payroll.tree</field>
+        <field name="model">om.hr.payroll</field>
+        <field name="arch" type="xml">
+            <tree string="Bảng lương" decoration-success="status == 'paid'" decoration-info="status == 'confirmed'">
+                <field name="name" string="Mã"/>
+                <field name="employee_id" string="Nhân viên"/>
+                <field name="month" string="Tháng"/>
+                <field name="year" string="Năm"/>
+                <field name="attendance_count" string="Số công"/>
+                <field name="basic_salary" string="Lương cơ bản"/>
+                <field name="salary_from_attendance" string="Lương theo công"/>
+                <field name="bonus" string="Thưởng"/>
+                <field name="penalty" string="Phạt"/>
+                <field name="total_salary" string="Tổng lương"/>
+                <field name="status" widget="badge" decoration-success="status == 'paid'" decoration-info="status == 'confirmed'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View - Form bảng lương -->
+    <record id="view_payroll_form" model="ir.ui.view">
+        <field name="name">om.hr.payroll.form</field>
+        <field name="model">om.hr.payroll</field>
+        <field name="arch" type="xml">
+            <form string="Bảng lương" class="modern-form">
+                <header>
+                    <field name="status" invisible="1"/>
+                    <button name="action_recompute" string="Tính lại" type="object" class="oe_highlight"/>
+                    <button name="action_confirm" string="Xác nhận" type="object" class="oe_highlight" invisible="status != 'draft'"/>
+                    <button name="action_pay" string="Đã thanh toán" type="object" class="oe_highlight" invisible="status == 'paid'"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,confirmed,paid"/>
+                </header>
+                <sheet>
+                    <!-- Section: Just the Essentials -->
+                    <div class="oe_title">
+                        <h2>Thông tin cơ bản</h2>
+                        <p class="text-muted">Đây là tất cả các trường thông tin cơ bản cho một bản ghi bảng lương mới. Nếu bạn muốn thêm chi tiết, bạn có thể dễ dàng truy cập chúng bên dưới hoặc qua điều hướng bên.</p>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Mã bảng lương"/>
+                            <field name="employee_id" placeholder="Chọn nhân viên..." options="{'no_create': True}"/>
+                            <field name="month" placeholder="Chọn tháng"/>
+                            <field name="year" placeholder="Chọn năm"/>
+                        </group>
+                        <group>
+                            <field name="basic_salary" readonly="1" placeholder="Lương cơ bản"/>
+                            <field name="working_days_per_month" placeholder="Số ngày làm việc trong tháng"/>
+                            <field name="attendance_count" readonly="1" placeholder="Số công"/>
+                            <field name="total_worked_hours" readonly="1" placeholder="Tổng giờ làm việc"/>
+                        </group>
+                    </group>
+                    <group string="Vi phạm (đi muộn/về sớm)">
+                        <group>
+                            <field name="late_violation_count" readonly="1" string="Số lần đi muộn"/>
+                            <field name="early_violation_count" readonly="1" string="Số lần về sớm"/>
+                            <field name="total_violation_count" readonly="1" string="Tổng số lần vi phạm"/>
+                        </group>
+                        <group>
+                            <field name="violation_penalty_amount" readonly="1" string="Phạt tự động (50,000/lần)" class="oe_read_only"/>
+                        </group>
+                    </group>
+                    <group string="Tính toán lương">
+                        <group>
+                            <field name="salary_per_day" readonly="1" string="Lương/ngày công"/>
+                            <field name="salary_from_attendance" readonly="1" string="Lương theo số công"/>
+                        </group>
+                        <group>
+                            <field name="bonus"/>
+                            <field name="penalty" string="Phạt (thủ công)"/>
+                            <field name="violation_penalty_amount" readonly="1" string="Phạt tự động (đi muộn/về sớm)" invisible="violation_penalty_amount == 0"/>
+                            <field name="total_salary" readonly="1" string="Tổng lương nhận" class="oe_read_only"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chấm công trong tháng" name="attendances">
+                            <field name="attendance_ids" readonly="1">
+                                <tree decoration-warning="is_late or is_early">
+                                    <field name="date"/>
+                                    <field name="check_in"/>
+                                    <field name="check_out"/>
+                                    <field name="worked_hours"/>
+                                    <field name="is_late" invisible="1"/>
+                                    <field name="is_early" invisible="1"/>
+                                    <field name="status" widget="badge"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Ghi chú" name="notes">
+                            <field name="notes" placeholder="Nhập ghi chú về bảng lương..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View - Tìm kiếm bảng lương -->
+    <record id="view_payroll_search" model="ir.ui.view">
+        <field name="name">om.hr.payroll.search</field>
+        <field name="model">om.hr.payroll</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm bảng lương">
+                <field name="name" string="Mã"/>
+                <field name="employee_id" string="Nhân viên"/>
+                <field name="month" string="Tháng"/>
+                <field name="year" string="Năm"/>
+                <filter string="Nháp" name="draft" domain="[('status', '=', 'draft')]"/>
+                <filter string="Đã xác nhận" name="confirmed" domain="[('status', '=', 'confirmed')]"/>
+                <filter string="Đã thanh toán" name="paid" domain="[('status', '=', 'paid')]"/>
+                <separator/>
+                <filter string="Tháng này" name="this_month" domain="[('month', '=', context_today().strftime('%m')), ('year', '=', context_today().year)]"/>
+                <filter string="Năm nay" name="this_year" domain="[('year', '=', context_today().year)]"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>
+

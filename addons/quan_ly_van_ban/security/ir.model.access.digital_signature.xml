@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+    <!-- Security cho các model chữ ký số - Load sau khi models đã được tạo -->
+    <!-- noupdate="0" để cho phép cập nhật security rule khi upgrade -->
+    
+    <record id="access_om_digital_certificate_user" model="ir.model.access">
+        <field name="name">om.digital.certificate.user</field>
+        <field name="model_id" ref="model_om_digital_certificate"/>
+        <field name="group_id" ref="base.group_user"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="access_om_document_signature_user" model="ir.model.access">
+        <field name="name">om.document.signature.user</field>
+        <field name="model_id" ref="model_om_document_signature"/>
+        <field name="group_id" ref="base.group_user"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="access_om_document_approval_user" model="ir.model.access">
+        <field name="name">om.document.approval.user</field>
+        <field name="model_id" ref="model_om_document_approval"/>
+        <field name="group_id" ref="base.group_user"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="access_om_document_history_user" model="ir.model.access">
+        <field name="name">om.document.history.user</field>
+        <field name="model_id" ref="model_om_document_history"/>
+        <field name="group_id" ref="base.group_user"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="0"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <record id="access_om_document_reminder_user" model="ir.model.access">
+        <field name="name">om.document.reminder.user</field>
+        <field name="model_id" ref="model_om_document_reminder"/>
+        <field name="group_id" ref="base.group_user"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="access_om_sign_document_wizard_user" model="ir.model.access">
+        <field name="name">om.sign.document.wizard.user</field>
+        <field name="model_id" ref="model_om_sign_document_wizard"/>
+        <field name="group_id" ref="base.group_user"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+</odoo>
+

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View - AI Tóm tắt văn bản -->
+    <record id="view_ai_document_summary_tree" model="ir.ui.view">
+        <field name="name">ai.document.summary.tree</field>
+        <field name="model">ai.document.summary</field>
+        <field name="arch" type="xml">
+            <tree string="AI Tóm tắt văn bản" decoration-success="status == 'completed'" decoration-danger="status == 'failed'">
+                <field name="name"/>
+                <field name="document_id"/>
+                <field name="summary_length"/>
+                <field name="status" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_ai_document_summary_form" model="ir.ui.view">
+        <field name="name">ai.document.summary.form</field>
+        <field name="model">ai.document.summary</field>
+        <field name="arch" type="xml">
+            <form string="AI Tóm tắt văn bản">
+                <header>
+                    <button name="action_summarize" string="Tóm tắt bằng AI" type="object" class="oe_highlight" invisible="status == 'completed'"/>
+                    <button name="action_fix_invalid_documents" string="Sửa dữ liệu lỗi" type="object" class="btn-secondary" context="{'fix_all': True}"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,processing,completed" statusbar_clickable="1"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="document_id" options="{'no_create': True}"/>
+                            <field name="summary_length"/>
+                            <field name="use_simple_summary"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-info" role="alert" invisible="not use_simple_summary">
+                        <strong>💡 Tóm tắt đơn giản:</strong> Sẽ lấy các câu đầu tiên của văn bản. Không cần AI, hoạt động ngay cả khi không có API key.
+                    </div>
+                    <group string="Nội dung">
+                        <field name="original_text" placeholder="Nhập nội dung văn bản cần tóm tắt..."/>
+                    </group>
+                    <group string="Kết quả tóm tắt" invisible="not summary">
+                        <field name="summary" readonly="1" nolabel="1" placeholder="Kết quả tóm tắt sẽ hiển thị ở đây..." invisible="1"/>
+                        <field name="summary_display" readonly="1" nolabel="1" placeholder="Kết quả tóm tắt sẽ hiển thị ở đây..."/>
+                    </group>
+                    <group string="Lỗi" invisible="not error_message">
+                        <field name="error_message" readonly="1" nolabel="1" class="alert alert-danger"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_ai_document_summary" model="ir.actions.act_window">
+        <field name="name">AI Tóm tắt văn bản</field>
+        <field name="res_model">ai.document.summary</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo bản tóm tắt đầu tiên
+            </p>
+            <p>
+                Sử dụng AI để tự động tóm tắt văn bản dài thành bản tóm tắt ngắn gọn.
+            </p>
+        </field>
+    </record>
+
+</odoo>
+

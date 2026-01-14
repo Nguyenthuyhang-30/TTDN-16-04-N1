@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View - Danh sách đơn hàng -->
+    <record id="view_order_tree" model="ir.ui.view">
+        <field name="name">qlkh.order.tree</field>
+        <field name="model">qlkh.order</field>
+        <field name="arch" type="xml">
+            <tree string="Đơn hàng" decoration-success="state == 'completed'" decoration-info="state == 'confirmed'">
+                <field name="name" string="Đơn hàng"/>
+                <field name="order_date" string="Ngày đặt hàng"/>
+                <field name="customer_id" string="Khách hàng"/>
+                <field name="total_amount" string="Thành tiền"/>
+                <field name="state" string="Trạng thái" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View - Form đơn hàng -->
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">qlkh.order.form</field>
+        <field name="model">qlkh.order</field>
+        <field name="arch" type="xml">
+            <form string="Đơn hàng" class="modern-form">
+                <header>
+                    <button name="action_confirm" string="Xác nhận" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_complete" string="Hoàn thành" type="object" class="oe_highlight" invisible="state != 'confirmed'"/>
+                    <button name="action_cancel" string="Hủy" type="object" invisible="state in ['completed', 'cancelled']"/>
+                    <button name="action_draft" string="Quay lại nháp" type="object" invisible="state not in ['cancelled']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,completed" statusbar_clickable="1"/>
+                </header>
+                <sheet>
+                    <!-- Section: Just the Essentials -->
+                    <div class="oe_title">
+                        <h2>Thông tin cơ bản</h2>
+                        <p class="text-muted">Đây là tất cả các trường thông tin cơ bản cho một đơn hàng mới. Nếu bạn muốn thêm chi tiết, bạn có thể dễ dàng truy cập chúng bên dưới hoặc qua điều hướng bên.</p>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="name" readonly="1" placeholder="Mã đơn hàng"/>
+                            <field name="customer_id" placeholder="Chọn khách hàng..." options="{'no_create': True}"/>
+                            <field name="order_date" placeholder="Chọn ngày đặt hàng"/>
+                        </group>
+                        <group>
+                            <field name="total_amount" readonly="1" class="oe_read_only" placeholder="Tổng tiền"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chi tiết đơn hàng" name="order_lines">
+                            <field name="order_line_ids">
+                                <tree editable="bottom">
+                                    <field name="product_id" string="Tên sản phẩm" options="{'no_create': True}"/>
+                                    <field name="quantity" string="Số lượng"/>
+                                    <field name="unit_price" string="Đơn giá"/>
+                                    <field name="subtotal" string="Thành tiền" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Ghi chú" name="notes">
+                            <field name="notes" placeholder="Nhập ghi chú về đơn hàng..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View - Tìm kiếm đơn hàng -->
+    <record id="view_order_search" model="ir.ui.view">
+        <field name="name">qlkh.order.search</field>
+        <field name="model">qlkh.order</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm đơn hàng">
+                <field name="name" string="Đơn hàng"/>
+                <field name="customer_id" string="Khách hàng"/>
+                <field name="order_date" string="Ngày đặt hàng"/>
+                <filter string="Nháp" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Mới" name="confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <filter string="Hoàn thành" name="completed" domain="[('state', '=', 'completed')]"/>
+                <filter string="Đã hủy" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter string="Hôm nay" name="today" domain="[('order_date', '&gt;=', context_today().strftime('%Y-%m-%d 00:00:00')), ('order_date', '&lt;=', context_today().strftime('%Y-%m-%d 23:59:59'))]"/>
+                <filter string="Tuần này" name="this_week" domain="[('order_date', '&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d')), ('order_date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action để mở danh sách đơn hàng -->
+    <record id="action_order" model="ir.actions.act_window">
+        <field name="name">Chi tiết đơn hàng</field>
+        <field name="res_model">qlkh.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo đơn hàng đầu tiên
+            </p>
+            <p>
+                Quản lý đơn hàng và chi tiết đơn hàng của khách hàng.
+            </p>
+        </field>
+    </record>
+
+</odoo>
+

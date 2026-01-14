@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View - Cấu hình AI -->
+    <record id="view_ai_config_form" model="ir.ui.view">
+        <field name="name">ai.config.form</field>
+        <field name="model">ai.config</field>
+        <field name="arch" type="xml">
+            <form string="Cấu hình AI và External API">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="AI Configuration" name="ai_config">
+                            <div class="alert alert-info" role="alert">
+                                <strong>Hướng dẫn lấy API Key:</strong><br/>
+                                - <strong>Gemini (Miễn phí):</strong> <a href="https://aistudio.google.com/app/apikey" target="_blank">https://aistudio.google.com/app/apikey</a><br/>
+                                - <strong>OpenAI (Có phí):</strong> <a href="https://platform.openai.com/api-keys" target="_blank">https://platform.openai.com/api-keys</a>
+                            </div>
+                            <group>
+                                <group>
+                                    <field name="ai_provider"/>
+                                    <field name="openai_api_key" password="True" invisible="ai_provider != 'openai'"/>
+                                    <field name="openai_model" invisible="ai_provider != 'openai'"/>
+                                </group>
+                                <group>
+                                    <field name="gemini_api_key" password="True" invisible="ai_provider != 'gemini'"/>
+                                    <field name="gemini_model" invisible="ai_provider != 'gemini'" 
+                                           placeholder="gemini-pro (mặc định)"
+                                           help="Nhập tên model Gemini (ví dụ: gemini-pro, gemini-1.5-pro, gemini-1.5-flash). Hệ thống sẽ tự động thử các model khác nếu model này không hoạt động."/>
+                                    <div class="alert alert-info" role="alert" invisible="ai_provider != 'gemini' or not gemini_api_key">
+                                        <strong>💡 Mẹo:</strong> Sau khi nhập API key, bạn có thể test bằng cách tạo một bản ghi "AI Tóm tắt văn bản" và click "Tóm tắt bằng AI" để kiểm tra.
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="External API" name="external_api">
+                            <group string="Telegram">
+                                <field name="telegram_bot_token" password="True"/>
+                                <field name="telegram_chat_id"/>
+                            </group>
+                            <group string="Zalo">
+                                <field name="zalo_oa_id"/>
+                                <field name="zalo_access_token" password="True"/>
+                            </group>
+                            <group string="Google Calendar">
+                                <field name="google_calendar_client_id"/>
+                                <field name="google_calendar_client_secret" password="True"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_ai_config_tree" model="ir.ui.view">
+        <field name="name">ai.config.tree</field>
+        <field name="model">ai.config</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="ai_provider"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_ai_config" model="ir.actions.act_window">
+        <field name="name">Cấu hình AI</field>
+        <field name="res_model">ai.config</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>
+

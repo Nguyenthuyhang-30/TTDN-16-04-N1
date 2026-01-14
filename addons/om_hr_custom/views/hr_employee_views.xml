@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View - Danh sách nhân viên -->
+    <record id="view_employee_tree" model="ir.ui.view">
+        <field name="name">om.hr.employee.tree</field>
+        <field name="model">om.hr.employee</field>
+        <field name="arch" type="xml">
+            <tree string="Nhân viên">
+                <field name="employee_code" string="Mã NV"/>
+                <field name="name" string="Tên nhân viên"/>
+                <field name="department_id" string="Phòng ban"/>
+                <field name="job_title" string="Chức vụ"/>
+                <field name="role" string="Vai trò"/>
+                <field name="employee_status" string="Trạng thái" widget="badge" decoration-success="employee_status=='working'" decoration-danger="employee_status=='resigned'" decoration-warning="employee_status=='suspended'"/>
+                <field name="contract_type" string="Loại hợp đồng"/>
+                <field name="join_date" string="Ngày vào làm"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View - Form nhân viên -->
+    <record id="view_employee_form" model="ir.ui.view">
+        <field name="name">om.hr.employee.form</field>
+        <field name="model">om.hr.employee</field>
+        <field name="arch" type="xml">
+            <form string="Nhân viên" class="modern-form">
+                <header>
+                    <field name="employee_status" widget="statusbar" statusbar_visible="working,resigned,suspended" statusbar_clickable="1"/>
+                </header>
+                <sheet>
+                    <!-- Section: Just the Essentials -->
+                    <div class="oe_title">
+                        <h2>Thông tin cơ bản</h2>
+                        <p class="text-muted">Đây là tất cả các trường thông tin cơ bản cho một bản ghi nhân viên mới. Nếu bạn muốn thêm chi tiết, bạn có thể dễ dàng truy cập chúng bên dưới hoặc qua điều hướng bên.</p>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Nhập tên nhân viên..."/>
+                            <field name="employee_code" placeholder="Nhập mã nhân viên..."/>
+                            <field name="email" placeholder="Nhập email..."/>
+                            <field name="phone" placeholder="Nhập số điện thoại..."/>
+                        </group>
+                        <group>
+                            <field name="join_date" placeholder="Chọn ngày vào làm"/>
+                            <field name="department_id" placeholder="Chọn phòng ban..." options="{'no_create': True}"/>
+                            <field name="job_title" placeholder="Nhập chức vụ..."/>
+                            <field name="contract_type" placeholder="Chọn loại hợp đồng..."/>
+                            <field name="salary" placeholder="Nhập mức lương..."/>
+                        </group>
+                    </group>
+                    
+                    <!-- Section: Vai trò -->
+                    <div class="oe_title" style="margin-top: 32px;">
+                        <h2>Vai trò trong tổ chức</h2>
+                        <p class="text-muted">Chọn vai trò của nhân viên trong tổ chức. Vai trò sẽ xác định quyền hạn và trách nhiệm của nhân viên.</p>
+                    </div>
+                    <group>
+                        <field name="role" widget="radio" class="radio-card-group" options="{'horizontal': false}"/>
+                    </group>
+                    
+                    <!-- Section: Phân quyền -->
+                    <div class="oe_title" style="margin-top: 32px;">
+                        <h2>Phân quyền hệ thống</h2>
+                        <p class="text-muted">Cấu hình quyền hạn của nhân viên trong hệ thống. Các quyền này sẽ xác định những gì nhân viên có thể làm trong hệ thống.</p>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="can_draft" widget="boolean_toggle" string="Quyền soạn thảo"/>
+                            <div class="text-muted" style="margin-top: 4px; margin-bottom: 16px; padding-left: 24px;">Nhân viên có quyền soạn thảo và tạo mới các văn bản, đơn hàng trong hệ thống.</div>
+                        </group>
+                        <group>
+                            <field name="can_approve" widget="boolean_toggle" string="Quyền duyệt"/>
+                            <div class="text-muted" style="margin-top: 4px; margin-bottom: 16px; padding-left: 24px;">Nhân viên có quyền duyệt các văn bản, đơn hàng do nhân viên khác soạn thảo.</div>
+                        </group>
+                        <group>
+                            <field name="can_final_approve" widget="boolean_toggle" string="Quyền phê duyệt cuối"/>
+                            <div class="text-muted" style="margin-top: 4px; margin-bottom: 16px; padding-left: 24px;">Nhân viên có quyền phê duyệt cuối cùng (thường dành cho Giám đốc).</div>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Hợp đồng làm việc" name="contracts">
+                            <field name="contract_ids" context="{'default_employee_id': id}">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="contract_type"/>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                    <field name="salary"/>
+                                    <field name="state" widget="badge"/>
+                                    <field name="days_remaining"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Ghi chú" name="notes">
+                            <field name="notes" placeholder="Nhập ghi chú về nhân viên..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View - Tìm kiếm nhân viên -->
+    <record id="view_employee_search" model="ir.ui.view">
+        <field name="name">om.hr.employee.search</field>
+        <field name="model">om.hr.employee</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm nhân viên">
+                <field name="name" string="Tên"/>
+                <field name="employee_code" string="Mã NV"/>
+                <field name="department_id" string="Phòng ban"/>
+                <field name="role" string="Vai trò"/>
+                <field name="employee_status" string="Trạng thái"/>
+                <field name="contract_type" string="Loại hợp đồng"/>
+                <filter string="Hoạt động" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Không hoạt động" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="Đang làm việc" name="working" domain="[('employee_status', '=', 'working')]"/>
+                <filter string="Nghỉ việc" name="resigned" domain="[('employee_status', '=', 'resigned')]"/>
+                <filter string="Tạm nghỉ" name="suspended" domain="[('employee_status', '=', 'suspended')]"/>
+                <separator/>
+                <filter string="Nhân viên" name="employee" domain="[('role', '=', 'employee')]"/>
+                <filter string="Trưởng phòng" name="manager" domain="[('role', '=', 'manager')]"/>
+                <filter string="Giám đốc" name="director" domain="[('role', '=', 'director')]"/>
+                <separator/>
+                <filter string="Toàn thời gian" name="fulltime" domain="[('contract_type', '=', 'fulltime')]"/>
+                <filter string="Bán thời gian" name="parttime" domain="[('contract_type', '=', 'parttime')]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Tree View - Danh sách phòng ban -->
+    <record id="view_department_tree" model="ir.ui.view">
+        <field name="name">om.hr.department.tree</field>
+        <field name="model">om.hr.department</field>
+        <field name="arch" type="xml">
+            <tree string="Phòng ban">
+                <field name="code" string="Mã"/>
+                <field name="name" string="Tên phòng ban"/>
+                <field name="manager_id" string="Trưởng phòng"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View - Form phòng ban -->
+    <record id="view_department_form" model="ir.ui.view">
+        <field name="name">om.hr.department.form</field>
+        <field name="model">om.hr.department</field>
+        <field name="arch" type="xml">
+            <form string="Phòng ban" class="modern-form">
+                <sheet>
+                    <!-- Section: Just the Essentials -->
+                    <div class="oe_title">
+                        <h2>Thông tin cơ bản</h2>
+                        <p class="text-muted">Đây là tất cả các trường thông tin cơ bản cho một phòng ban mới. Nếu bạn muốn thêm chi tiết, bạn có thể dễ dàng truy cập chúng bên dưới hoặc qua điều hướng bên.</p>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="code" placeholder="Nhập mã phòng ban..."/>
+                            <field name="name" placeholder="Nhập tên phòng ban..."/>
+                        </group>
+                        <group>
+                            <field name="manager_id" placeholder="Chọn trưởng phòng..." options="{'no_create': True}"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <field name="employee_ids">
+                        <tree>
+                            <field name="employee_code"/>
+                            <field name="name"/>
+                            <field name="job_title"/>
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View - Tìm kiếm phòng ban -->
+    <record id="view_department_search" model="ir.ui.view">
+        <field name="name">om.hr.department.search</field>
+        <field name="model">om.hr.department</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm phòng ban">
+                <field name="name"/>
+                <field name="code"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

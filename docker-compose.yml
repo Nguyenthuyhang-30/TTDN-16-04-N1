@@ -1,0 +1,39 @@
+services:
+  web:
+    build: .
+    container_name: odoo_17
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+      - DB_NAME=postgres
+    volumes:
+      - odoo_data:/var/lib/odoo
+      - ./addons:/mnt/extra-addons
+
+  db:
+    image: postgres:16
+    container_name: postgres_odoo
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+    ports:
+      - "5434:5432"  # Expose port 5434 trên host, map tới 5432 trong container
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  mail:
+    image: axllent/mailpit:latest
+    container_name: mailpit
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  odoo_data:
+  postgres_data:

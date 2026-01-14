@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dashboard View - Dashboard Quản lý nhân sự -->
+    <record id="view_hr_dashboard_form" model="ir.ui.view">
+        <field name="name">om.hr.dashboard.form</field>
+        <field name="model">om.hr.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Dashboard Quản lý nhân sự" delete="0">
+                <field name="compute_trigger" invisible="1"/>
+                <field name="chart_employee_status_data" widget="text" invisible="1"/>
+                <field name="chart_role_data" widget="text" invisible="1"/>
+                <field name="chart_permissions_data" widget="text" invisible="1"/>
+                <sheet>
+                    <div style="background: #f5f7fa; padding: 20px; min-height: 100vh;">
+                        <!-- Header -->
+                        <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <h1 style="margin: 0; font-size: 24px; font-weight: 600; color: #2c3e50;">Dashboard Quản lý nhân sự</h1>
+                            <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 14px;">Tổng quan và phân tích dữ liệu nhân sự</p>
+                        </div>
+
+                        <!-- KPI Cards Row 1 -->
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col-md-3">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 100%; border-left: 4px solid #667eea;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                                        <div>
+                                            <p style="margin: 0; color: #7f8c8d; font-size: 13px; font-weight: 500; text-transform: uppercase;">Tổng nhân viên</p>
+                                            <h2 style="margin: 10px 0 0 0; font-size: 32px; font-weight: 700; color: #2c3e50;"><field name="total_employees"/></h2>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">👥</div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; margin-top: 15px;">
+                                        <span style="background: #e8f5e9; color: #4caf50; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">+8%</span>
+                                        <span style="margin-left: 8px; color: #7f8c8d; font-size: 12px;">so với tháng trước</span>
+                                    </div>
+                                    <button name="action_view_employees" string="Xem chi tiết" type="object" class="btn btn-sm mt-2" style="margin-top: 15px; background: #667eea; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px;"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 100%; border-left: 4px solid #11998e;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                                        <div>
+                                            <p style="margin: 0; color: #7f8c8d; font-size: 13px; font-weight: 500; text-transform: uppercase;">Đang làm việc</p>
+                                            <h2 style="margin: 10px 0 0 0; font-size: 32px; font-weight: 700; color: #2c3e50;"><field name="working_employees"/></h2>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">✅</div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; margin-top: 15px;">
+                                        <span style="background: #e8f5e9; color: #4caf50; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">+5%</span>
+                                        <span style="margin-left: 8px; color: #7f8c8d; font-size: 12px;">tăng trưởng</span>
+                                    </div>
+                                    <button name="action_view_working_employees" string="Xem chi tiết" type="object" class="btn btn-sm mt-2" style="margin-top: 15px; background: #11998e; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px;"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 100%; border-left: 4px solid #f093fb;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                                        <div>
+                                            <p style="margin: 0; color: #7f8c8d; font-size: 13px; font-weight: 500; text-transform: uppercase;">Nghỉ việc</p>
+                                            <h2 style="margin: 10px 0 0 0; font-size: 32px; font-weight: 700; color: #2c3e50;"><field name="resigned_employees"/></h2>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🚪</div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; margin-top: 15px;">
+                                        <span style="background: #ffebee; color: #f44336; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">-2%</span>
+                                        <span style="margin-left: 8px; color: #7f8c8d; font-size: 12px;">giảm so với tháng trước</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 100%; border-left: 4px solid #fa709a;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                                        <div>
+                                            <p style="margin: 0; color: #7f8c8d; font-size: 13px; font-weight: 500; text-transform: uppercase;">Tạm nghỉ</p>
+                                            <h2 style="margin: 10px 0 0 0; font-size: 32px; font-weight: 700; color: #2c3e50;"><field name="suspended_employees"/></h2>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">⏸️</div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; margin-top: 15px;">
+                                        <span style="background: #fff3e0; color: #ff9800; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">0%</span>
+                                        <span style="margin-left: 8px; color: #7f8c8d; font-size: 12px;">không đổi</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Role Distribution -->
+                        <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 20px;">
+                            <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">👥 Phân bổ theo vai trò</h3>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div style="padding: 20px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 10px; color: white; text-align: center;">
+                                        <h3 style="margin: 0; font-size: 36px; font-weight: 700;"><field name="employee_count"/></h3>
+                                        <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;">Nhân viên</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="padding: 20px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 10px; color: white; text-align: center;">
+                                        <h3 style="margin: 0; font-size: 36px; font-weight: 700;"><field name="manager_count"/></h3>
+                                        <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;">Trưởng phòng</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="padding: 20px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 10px; color: white; text-align: center;">
+                                        <h3 style="margin: 0; font-size: 36px; font-weight: 700;"><field name="director_count"/></h3>
+                                        <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;">Giám đốc</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Permissions and Departments -->
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col-md-6">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 100%;">
+                                    <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">🔐 Phân quyền</h3>
+                                    <div style="margin-bottom: 15px;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea;">
+                                            <span style="color: #2c3e50; font-weight: 500;">Quyền soạn thảo</span>
+                                            <strong style="font-size: 24px; color: #667eea;"><field name="can_draft_count"/></strong>
+                                        </div>
+                                    </div>
+                                    <div style="margin-bottom: 15px;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #11998e;">
+                                            <span style="color: #2c3e50; font-weight: 500;">Quyền duyệt</span>
+                                            <strong style="font-size: 24px; color: #11998e;"><field name="can_approve_count"/></strong>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #fa709a;">
+                                            <span style="color: #2c3e50; font-weight: 500;">Quyền phê duyệt</span>
+                                            <strong style="font-size: 24px; color: #fa709a;"><field name="can_final_approve_count"/></strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 100%; text-align: center;">
+                                    <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">🏢 Phòng ban</h3>
+                                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 12px; color: white;">
+                                        <h2 style="margin: 0; font-size: 56px; font-weight: 700;"><field name="total_departments"/></h2>
+                                        <p style="margin: 15px 0 0 0; font-size: 16px; opacity: 0.9;">Tổng số phòng ban</p>
+                                        <button name="action_view_departments" string="Xem danh sách" type="object" class="btn btn-light mt-3" style="margin-top: 20px; background: white; color: #667eea; border: none; padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: 600;"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts Section -->
+                        <div class="row" style="margin-top: 20px;">
+                            <div class="col-md-4">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                                    <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">📊 Trạng thái nhân viên</h3>
+                                    <canvas id="chartEmployeeStatus" style="max-height: 300px;"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                                    <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">👥 Phân bổ vai trò</h3>
+                                    <canvas id="chartRole" style="max-height: 300px;"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                                    <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">🔐 Phân quyền</h3>
+                                    <canvas id="chartPermissions" style="max-height: 300px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action để mở Dashboard -->
+    <record id="action_hr_dashboard" model="ir.actions.act_window">
+        <field name="name">Dashboard Quản lý nhân sự</field>
+        <field name="res_model">om.hr.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+        <field name="context">{'default_total_employees': 0}</field>
+    </record>
+
+</odoo>

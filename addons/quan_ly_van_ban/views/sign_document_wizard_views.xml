@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Wizard Form View - Ký số văn bản -->
+    <record id="view_sign_document_wizard_form" model="ir.ui.view">
+        <field name="name">om.sign.document.wizard.form</field>
+        <field name="model">om.sign.document.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Ký số văn bản">
+                <sheet>
+                    <group>
+                        <field name="document_id" readonly="1"/>
+                        <field name="signer_id" domain="[('active', '=', True)]" options="{'no_create': True, 'no_open': False}"/>
+                        <field name="certificate_id"/>
+                    </group>
+                    
+                    <group string="Phương thức ký">
+                        <field name="signature_method"/>
+                    </group>
+                    
+                    <!-- Vẽ chữ ký -->
+                    <group string="Vẽ chữ ký" invisible="signature_method != 'draw'">
+                        <field name="signature_draw" widget="image" options="{'preview_image': 'signature_draw'}"/>
+                        <p class="text-muted">Sử dụng chuột hoặc touchpad để vẽ chữ ký. Chữ ký sẽ được lưu dạng PNG/SVG.</p>
+                    </group>
+                    
+                    <!-- Upload chữ ký -->
+                    <group string="Tải lên chữ ký" invisible="signature_method != 'upload'">
+                        <field name="signature_upload" filename="signature_upload_filename" widget="binary"/>
+                        <field name="signature_upload_filename" invisible="1"/>
+                        <p class="text-muted">Upload hình ảnh chữ ký đã scan. Hỗ trợ PNG, JPG (nên trong suốt). Hệ thống sẽ tự động loại bỏ nền trắng.</p>
+                    </group>
+                    
+                    <!-- Chữ ký font -->
+                    <group string="Chữ ký font" invisible="signature_method != 'font'">
+                        <field name="signature_font_style"/>
+                        <field name="signature_font_name" placeholder="Nhập tên để tự động tạo chữ ký"/>
+                        <p class="text-muted">Chọn font chữ ký và nhập tên. Hệ thống sẽ tự động tạo chữ ký với nhiều style: Cursive, Elegant, Modern.</p>
+                    </group>
+                    
+                    <group string="Vị trí ký trên tài liệu">
+                        <field name="page_number"/>
+                        <field name="position_x"/>
+                        <field name="position_y"/>
+                        <p class="text-muted">Chọn số trang và vị trí (X, Y) để đặt chữ ký trên tài liệu (đơn vị: mm).</p>
+                    </group>
+                    
+                    <group string="Xác thực (nếu cần)">
+                        <field name="otp_code" placeholder="Nhập mã OTP nếu cần"/>
+                    </group>
+                    
+                    <group>
+                        <field name="notes" placeholder="Nhập ghi chú về chữ ký (nếu có)..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Ký số" name="action_sign" type="object" class="oe_highlight"/>
+                    <button string="Hủy" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action để mở wizard -->
+    <record id="action_sign_document_wizard" model="ir.actions.act_window">
+        <field name="name">Ký số văn bản</field>
+        <field name="res_model">om.sign.document.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
+

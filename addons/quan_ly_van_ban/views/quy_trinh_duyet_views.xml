@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View - Danh sách quy trình duyệt -->
+    <record id="view_document_approval_tree" model="ir.ui.view">
+        <field name="name">om.document.approval.tree</field>
+        <field name="model">om.document.approval</field>
+        <field name="arch" type="xml">
+            <tree string="Quy trình duyệt" decoration-info="state=='pending'" decoration-success="state=='approved'" decoration-danger="state=='rejected'">
+                <field name="sequence"/>
+                <field name="name"/>
+                <field name="document_id"/>
+                <field name="approver_id"/>
+                <field name="role"/>
+                <field name="state" widget="badge" decoration-info="state=='pending'" decoration-success="state=='approved'" decoration-danger="state=='rejected'"/>
+                <field name="approval_date"/>
+                <field name="deadline"/>
+                <field name="is_overdue" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View - Form quy trình duyệt -->
+    <record id="view_document_approval_form" model="ir.ui.view">
+        <field name="name">om.document.approval.form</field>
+        <field name="model">om.document.approval</field>
+        <field name="arch" type="xml">
+            <form string="Quy trình duyệt" class="modern-form">
+                <header>
+                    <field name="state" invisible="1"/>
+                    <button name="action_approve" string="Duyệt" type="object" class="oe_highlight" invisible="state != 'pending'"/>
+                    <button name="action_reject" string="Từ chối" type="object" invisible="state != 'pending'"/>
+                    <button name="action_skip" string="Bỏ qua" type="object" invisible="state != 'pending'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,approved,rejected"/>
+                </header>
+                <sheet>
+                    <!-- Section: Just the Essentials -->
+                    <div class="oe_title">
+                        <h2>Thông tin cơ bản</h2>
+                        <p class="text-muted">Đây là tất cả các trường thông tin cơ bản cho một quy trình duyệt mới. Nếu bạn muốn thêm chi tiết, bạn có thể dễ dàng truy cập chúng bên dưới hoặc qua điều hướng bên.</p>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="document_id" placeholder="Chọn văn bản..." options="{'no_create': False, 'no_open': False}" domain="[('status', 'in', ['draft', 'pending_approval'])]"/>
+                            <field name="sequence" placeholder="Thứ tự"/>
+                            <field name="approver_id" placeholder="Chọn người duyệt..." domain="[('active', '=', True), ('employee_status', '=', 'working')]" options="{'no_create': True, 'no_open': False}"/>
+                            <field name="role" placeholder="Vai trò"/>
+                        </group>
+                        <group>
+                            <field name="approval_date" readonly="1" placeholder="Ngày duyệt"/>
+                            <field name="deadline" placeholder="Hạn duyệt"/>
+                            <field name="is_overdue" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="comment" placeholder="Nhập nhận xét về văn bản..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_document_approval_search" model="ir.ui.view">
+        <field name="name">om.document.approval.search</field>
+        <field name="model">om.document.approval</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm quy trình duyệt">
+                <field name="name"/>
+                <field name="document_id"/>
+                <field name="approver_id"/>
+                <field name="role"/>
+                <filter string="Chờ duyệt" name="pending" domain="[('state', '=', 'pending')]"/>
+                <filter string="Đã duyệt" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Từ chối" name="rejected" domain="[('state', '=', 'rejected')]"/>
+                <filter string="Có hạn duyệt" name="has_deadline" domain="[('deadline', '!=', False)]"/>
+            </search>
+        </field>
+    </record>
+</odoo>
+

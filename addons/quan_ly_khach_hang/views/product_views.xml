@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View - Danh sách sản phẩm -->
+    <record id="view_product_tree" model="ir.ui.view">
+        <field name="name">qlkh.product.tree</field>
+        <field name="model">qlkh.product</field>
+        <field name="arch" type="xml">
+            <tree string="Sản phẩm" decoration-warning="stock_quantity == 0" decoration-danger="stock_quantity &lt; 0">
+                <field name="name" string="Tên sản phẩm"/>
+                <field name="product_type" string="Loại sản phẩm"/>
+                <field name="brand" string="Thương hiệu"/>
+                <field name="unit_price" string="Đơn giá"/>
+                <field name="stock_quantity" string="Số lượng tồn kho"/>
+                <field name="warranty_months" string="Bảo hành (tháng)"/>
+                <field name="total_inventory_value" string="Tổng giá trị kho"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View - Form sản phẩm -->
+    <record id="view_product_form" model="ir.ui.view">
+        <field name="name">qlkh.product.form</field>
+        <field name="model">qlkh.product</field>
+        <field name="arch" type="xml">
+            <form string="Sản phẩm" class="modern-form">
+                <sheet>
+                    <!-- Section: Just the Essentials -->
+                    <div class="oe_title">
+                        <h2>Thông tin cơ bản</h2>
+                        <p class="text-muted">Đây là tất cả các trường thông tin cơ bản cho một sản phẩm mới. Nếu bạn muốn thêm chi tiết, bạn có thể dễ dàng truy cập chúng bên dưới hoặc qua điều hướng bên.</p>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Nhập tên sản phẩm..."/>
+                            <field name="product_type" placeholder="Chọn loại sản phẩm..."/>
+                            <field name="brand" placeholder="Nhập thương hiệu..."/>
+                        </group>
+                        <group>
+                            <field name="unit_price" placeholder="Nhập đơn giá..."/>
+                            <field name="stock_quantity" placeholder="Nhập số lượng tồn kho..."/>
+                            <field name="warranty_months" placeholder="Nhập thời gian bảo hành (tháng)..."/>
+                            <field name="total_inventory_value" readonly="1" placeholder="Tổng giá trị kho"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chi tiết đơn hàng" name="order_lines">
+                            <field name="order_line_ids" readonly="1">
+                                <tree>
+                                    <field name="order_id"/>
+                                    <field name="quantity"/>
+                                    <field name="unit_price"/>
+                                    <field name="subtotal"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View - Tìm kiếm sản phẩm -->
+    <record id="view_product_search" model="ir.ui.view">
+        <field name="name">qlkh.product.search</field>
+        <field name="model">qlkh.product</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm sản phẩm">
+                <field name="name" string="Tên sản phẩm"/>
+                <field name="brand" string="Thương hiệu"/>
+                <field name="product_type" string="Loại sản phẩm"/>
+                <filter string="Hết hàng" name="out_of_stock" domain="[('stock_quantity', '=', 0)]"/>
+                <filter string="Còn hàng" name="in_stock" domain="[('stock_quantity', '&gt;', 0)]"/>
+                <separator/>
+                <filter string="Ổ cứng" name="hard_drive" domain="[('product_type', '=', 'hard_drive')]"/>
+                <filter string="RAM" name="ram" domain="[('product_type', '=', 'ram')]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action để mở danh sách sản phẩm -->
+    <record id="action_product" model="ir.actions.act_window">
+        <field name="name">Chi tiết sản phẩm</field>
+        <field name="res_model">qlkh.product</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo sản phẩm đầu tiên
+            </p>
+            <p>
+                Quản lý thông tin sản phẩm, giá cả và tồn kho.
+            </p>
+        </field>
+    </record>
+
+</odoo>
+

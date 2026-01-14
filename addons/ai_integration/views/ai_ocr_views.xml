@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View - OCR Bóc tách -->
+    <record id="view_ai_ocr_extraction_tree" model="ir.ui.view">
+        <field name="name">ai.ocr.extraction.tree</field>
+        <field name="model">ai.ocr.extraction</field>
+        <field name="arch" type="xml">
+            <tree string="OCR Bóc tách dữ liệu" decoration-success="status == 'completed'" decoration-danger="status == 'failed'">
+                <field name="name"/>
+                <field name="document_type"/>
+                <field name="status" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_ai_ocr_extraction_form" model="ir.ui.view">
+        <field name="name">ai.ocr.extraction.form</field>
+        <field name="model">ai.ocr.extraction</field>
+        <field name="arch" type="xml">
+            <form string="OCR Bóc tách dữ liệu">
+                <header>
+                    <button name="action_extract_ocr" string="Bóc tách bằng OCR + AI" type="object" class="oe_highlight" invisible="status == 'completed'"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,processing,completed" statusbar_clickable="1"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="document_type"/>
+                        </group>
+                    </group>
+                    <group string="Hình ảnh/Tài liệu">
+                        <field name="image" widget="image" class="oe_avatar"/>
+                        <field name="image_filename"/>
+                    </group>
+                    <notebook>
+                        <page string="Văn bản đã bóc tách" name="extracted_text" invisible="not extracted_text">
+                            <field name="extracted_text" readonly="1" nolabel="1"/>
+                        </page>
+                        <page string="Dữ liệu đã xử lý" name="extracted_data" invisible="not extracted_data">
+                            <field name="extracted_data" readonly="1" nolabel="1"/>
+                        </page>
+                        <page string="Lỗi" name="error" invisible="not error_message">
+                            <field name="error_message" readonly="1" nolabel="1" class="alert alert-danger"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_ai_ocr_extraction" model="ir.actions.act_window">
+        <field name="name">OCR Bóc tách dữ liệu</field>
+        <field name="res_model">ai.ocr.extraction</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Upload hình ảnh đầu tiên
+            </p>
+            <p>
+                Sử dụng OCR và AI để bóc tách văn bản từ hình ảnh và cấu trúc hóa dữ liệu.
+            </p>
+        </field>
+    </record>
+
+</odoo>
+

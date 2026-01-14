@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View - Danh sách hỗ trợ khách hàng -->
+    <record id="view_customer_support_tree" model="ir.ui.view">
+        <field name="name">qlkh.customer.support.tree</field>
+        <field name="model">qlkh.customer.support</field>
+        <field name="arch" type="xml">
+            <tree string="Hỗ trợ khách hàng" decoration-success="state == 'resolved'" decoration-info="state == 'in_progress'">
+                <field name="customer_id" string="Khách hàng"/>
+                <field name="contact_method" string="Phương thức liên lạc"/>
+                <field name="support_days" string="Số ngày hỗ trợ"/>
+                <field name="start_time" string="Thời gian bắt đầu"/>
+                <field name="end_time" string="Thời gian kết thúc"/>
+                <field name="state" string="Trạng thái" widget="badge"/>
+                <field name="assigned_staff_id" string="Nhân viên phụ trách"/>
+                <field name="customer_rating" string="Điểm đánh giá từ khách hàng"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View - Form hỗ trợ khách hàng -->
+    <record id="view_customer_support_form" model="ir.ui.view">
+        <field name="name">qlkh.customer.support.form</field>
+        <field name="model">qlkh.customer.support</field>
+        <field name="arch" type="xml">
+            <form string="Hỗ trợ khách hàng" class="modern-form">
+                <header>
+                    <field name="state" invisible="1"/>
+                    <button name="action_start" string="Bắt đầu" type="object" class="oe_highlight" invisible="state != 'new'"/>
+                    <button name="action_resolve" string="Giải quyết" type="object" class="oe_highlight" invisible="state != 'in_progress'"/>
+                    <button name="action_cancel" string="Hủy" type="object" invisible="state in ['resolved', 'cancelled']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,in_progress,resolved" statusbar_clickable="1"/>
+                </header>
+                <sheet>
+                    <!-- Section: Just the Essentials -->
+                    <div class="oe_title">
+                        <h2>Thông tin cơ bản</h2>
+                        <p class="text-muted">Đây là tất cả các trường thông tin cơ bản cho một yêu cầu hỗ trợ mới. Nếu bạn muốn thêm chi tiết, bạn có thể dễ dàng truy cập chúng bên dưới hoặc qua điều hướng bên.</p>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="customer_id" placeholder="Chọn khách hàng..." options="{'no_create': True}"/>
+                            <field name="contact_method" placeholder="Chọn phương thức liên lạc..."/>
+                            <field name="assigned_staff_id" placeholder="Chọn nhân viên phụ trách..." options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="start_time" placeholder="Chọn thời gian bắt đầu"/>
+                            <field name="end_time" placeholder="Chọn thời gian kết thúc"/>
+                            <field name="support_days" readonly="1" placeholder="Số ngày hỗ trợ"/>
+                            <field name="customer_rating" placeholder="Chọn đánh giá..."/>
+                            <field name="rating_score" readonly="1" invisible="not customer_rating" placeholder="Điểm đánh giá"/>
+                        </group>
+                    </group>
+                    <group string="Mô tả">
+                        <field name="description" placeholder="Nhập mô tả vấn đề hoặc yêu cầu hỗ trợ..."/>
+                    </group>
+                    <group string="Giải pháp" invisible="not solution">
+                        <field name="solution" placeholder="Nhập giải pháp đã áp dụng..."/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View - Tìm kiếm hỗ trợ -->
+    <record id="view_customer_support_search" model="ir.ui.view">
+        <field name="name">qlkh.customer.support.search</field>
+        <field name="model">qlkh.customer.support</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm hỗ trợ">
+                <field name="customer_id" string="Khách hàng"/>
+                <field name="assigned_staff_id" string="Nhân viên phụ trách"/>
+                <field name="contact_method" string="Phương thức liên lạc"/>
+                <filter string="Mới" name="new" domain="[('state', '=', 'new')]"/>
+                <filter string="Đang xử lý" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Đã giải quyết" name="resolved" domain="[('state', '=', 'resolved')]"/>
+                <separator/>
+                <filter string="Có đánh giá" name="has_rating" domain="[('customer_rating', '!=', False)]"/>
+                <filter string="Đánh giá cao (4-5)" name="high_rating" domain="[('rating_score', '&gt;=', 4)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action để mở danh sách hỗ trợ -->
+    <record id="action_customer_support" model="ir.actions.act_window">
+        <field name="name">Hỗ trợ khách hàng</field>
+        <field name="res_model">qlkh.customer.support</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo yêu cầu hỗ trợ đầu tiên
+            </p>
+            <p>
+                Quản lý yêu cầu và phản hồi từ khách hàng.
+            </p>
+        </field>
+    </record>
+
+</odoo>
+

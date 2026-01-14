@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Wizard Form - Trợ lý ảo -->
+    <record id="view_ai_assistant_wizard_form" model="ir.ui.view">
+        <field name="name">ai.assistant.wizard.form</field>
+        <field name="model">ai.assistant.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Trợ lý ảo giải đáp nội quy">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="context_type"/>
+                        </group>
+                    </group>
+                    <group string="Câu hỏi">
+                        <field name="question" placeholder="Nhập câu hỏi về nội quy, quy định công ty..."/>
+                    </group>
+                    <group string="Câu trả lời" col="1">
+                        <field name="answer" readonly="1" nolabel="1" placeholder="Câu trả lời sẽ hiển thị ở đây sau khi nhấn 'Hỏi AI'..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_ask" string="Hỏi AI" type="object" class="oe_highlight"/>
+                    <button string="Đóng" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action để mở wizard -->
+    <record id="action_ai_assistant_wizard" model="ir.actions.act_window">
+        <field name="name">Trợ lý ảo</field>
+        <field name="res_model">ai.assistant.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>
+

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View - Danh sách chữ ký số -->
+    <record id="view_document_signature_tree" model="ir.ui.view">
+        <field name="name">om.document.signature.tree</field>
+        <field name="model">om.document.signature</field>
+        <field name="arch" type="xml">
+            <tree string="Chữ ký số" decoration-info="state=='pending'" decoration-success="state=='signed'" decoration-danger="state=='rejected'">
+                <field name="name"/>
+                <field name="document_id"/>
+                <field name="signer_id"/>
+                <field name="signature_type"/>
+                <field name="signed_date"/>
+                <field name="state" widget="badge" decoration-info="state=='pending'" decoration-success="state=='signed'" decoration-danger="state in ['rejected', 'expired']"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View - Form chữ ký số -->
+    <record id="view_document_signature_form" model="ir.ui.view">
+        <field name="name">om.document.signature.form</field>
+        <field name="model">om.document.signature</field>
+        <field name="arch" type="xml">
+            <form string="Chữ ký số" class="modern-form">
+                <header>
+                    <field name="state" invisible="1"/>
+                    <field name="signature_type" invisible="1"/>
+                    <button name="action_sign" string="Ký số" type="object" class="oe_highlight" invisible="state != 'pending'"/>
+                    <button name="action_reject" string="Từ chối" type="object" invisible="state != 'pending'"/>
+                    <button name="action_send_sign_request" string="Gửi yêu cầu ký" type="object" invisible="signature_type != 'customer' or state != 'pending'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,signed"/>
+                </header>
+                <sheet>
+                    <!-- Section: Just the Essentials -->
+                    <div class="oe_title">
+                        <h2>Thông tin cơ bản</h2>
+                        <p class="text-muted">Đây là tất cả các trường thông tin cơ bản cho một chữ ký số mới. Nếu bạn muốn thêm chi tiết, bạn có thể dễ dàng truy cập chúng bên dưới hoặc qua điều hướng bên.</p>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="document_id" placeholder="Chọn văn bản..." domain="[('status', 'in', ['approved', 'pending_sign', 'signed'])]" options="{'no_create': False, 'no_open': False}"/>
+                            <field name="signer_id" placeholder="Chọn người ký..." domain="[('active', '=', True), ('employee_status', '=', 'working')]" options="{'no_create': True, 'no_open': False}"/>
+                            <field name="signature_type" placeholder="Chọn loại chữ ký..."/>
+                            <field name="certificate_id" placeholder="Chọn chứng thư số..." options="{'no_create': True}"/>
+                            <field name="signature_method" placeholder="Chọn phương thức ký..."/>
+                        </group>
+                        <group>
+                            <field name="signed_date" placeholder="Ngày ký"/>
+                            <field name="ip_address" placeholder="Địa chỉ IP"/>
+                            <field name="page_number" placeholder="Số trang"/>
+                            <field name="position_x" placeholder="Vị trí X"/>
+                            <field name="position_y" placeholder="Vị trí Y"/>
+                        </group>
+                    </group>
+                    <group string="Thông tin khách hàng" invisible="signature_type != 'customer'">
+                        <field name="customer_id" options="{'no_create': False, 'no_open': True}"/>
+                        <field name="customer_name"/>
+                        <field name="customer_email"/>
+                        <field name="sign_link" readonly="1"/>
+                        <field name="sign_link_expiry"/>
+                    </group>
+                    <group>
+                        <field name="signature_image" widget="image" invisible="signature_method != 'image_otp'"/>
+                        <field name="otp_code" invisible="signature_method != 'image_otp'"/>
+                    </group>
+                    <group>
+                        <field name="signature_hash" readonly="1"/>
+                        <field name="signed_file" filename="signed_filename" widget="binary" readonly="1"/>
+                        <field name="signed_filename" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="notes" placeholder="Nhập ghi chú về chữ ký..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_document_signature_search" model="ir.ui.view">
+        <field name="name">om.document.signature.search</field>
+        <field name="model">om.document.signature</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm chữ ký số">
+                <field name="name"/>
+                <field name="document_id"/>
+                <field name="signer_id"/>
+                <field name="signature_type"/>
+                <filter string="Chờ ký" name="pending" domain="[('state', '=', 'pending')]"/>
+                <filter string="Đã ký" name="signed" domain="[('state', '=', 'signed')]"/>
+                <filter string="Từ chối" name="rejected" domain="[('state', '=', 'rejected')]"/>
+                <filter string="Ký nội bộ" name="internal" domain="[('signature_type', '=', 'internal')]"/>
+                <filter string="Ký khách hàng" name="customer" domain="[('signature_type', '=', 'customer')]"/>
+            </search>
+        </field>
+    </record>
+</odoo>
+

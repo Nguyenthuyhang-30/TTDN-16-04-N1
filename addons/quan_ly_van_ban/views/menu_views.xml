@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Actions -->
+    <record id="action_document_type" model="ir.actions.act_window">
+        <field name="name">Loại văn bản</field>
+        <field name="res_model">om.document.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo loại văn bản đầu tiên
+            </p>
+            <p>
+                Quản lý các loại văn bản như Công văn, Quyết định, Thông báo...
+            </p>
+        </field>
+    </record>
+
+    <record id="action_document_incoming" model="ir.actions.act_window">
+        <field name="name">Văn bản đến</field>
+        <field name="res_model">om.document.incoming</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo văn bản đến đầu tiên
+            </p>
+            <p>
+                Quản lý các văn bản nhận được từ các cơ quan, đơn vị khác.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_document_outgoing" model="ir.actions.act_window">
+        <field name="name">Văn bản đi</field>
+        <field name="res_model">om.document.outgoing</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo văn bản đi đầu tiên
+            </p>
+            <p>
+                Quản lý các văn bản gửi đi đến các cơ quan, đơn vị khác.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_digital_certificate" model="ir.actions.act_window">
+        <field name="name">Chứng thư số</field>
+        <field name="res_model">om.digital.certificate</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo chứng thư số đầu tiên
+            </p>
+            <p>
+                Quản lý chứng thư số của nhân viên để ký số văn bản.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_document_signature" model="ir.actions.act_window">
+        <field name="name">Chữ ký số</field>
+        <field name="res_model">om.document.signature</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Chưa có chữ ký số nào
+            </p>
+            <p>
+                Quản lý các chữ ký số của văn bản.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_document_approval" model="ir.actions.act_window">
+        <field name="name">Quy trình duyệt</field>
+        <field name="res_model">om.document.approval</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Chưa có quy trình duyệt nào
+            </p>
+            <p>
+                Quản lý quy trình duyệt văn bản.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_document_history" model="ir.actions.act_window">
+        <field name="name">Lịch sử văn bản</field>
+        <field name="res_model">om.document.history</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Chưa có lịch sử nào
+            </p>
+            <p>
+                Xem lịch sử thay đổi và hoạt động của văn bản.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu chính -->
+    <menuitem id="menu_document_management_root"
+              name="Quản lý văn bản"
+              sequence="20"
+              web_icon="quan_ly_van_ban,static/description/icon.png"/>
+
+    <!-- Menu Loại văn bản -->
+    <menuitem id="menu_document_type"
+              name="Loại văn bản"
+              parent="menu_document_management_root"
+              action="action_document_type"
+              sequence="10"/>
+
+    <!-- Menu Văn bản đến -->
+    <menuitem id="menu_document_incoming"
+              name="Văn bản đến"
+              parent="menu_document_management_root"
+              action="action_document_incoming"
+              sequence="20"/>
+
+    <!-- Menu Văn bản đi -->
+    <menuitem id="menu_document_outgoing"
+              name="Văn bản đi"
+              parent="menu_document_management_root"
+              action="action_document_outgoing"
+              sequence="30"/>
+
+    <!-- Menu Chữ ký số -->
+    <menuitem id="menu_digital_signature_root"
+              name="Chữ ký số"
+              parent="menu_document_management_root"
+              sequence="40"/>
+
+    <menuitem id="menu_digital_certificate"
+              name="Chứng thư số"
+              parent="menu_digital_signature_root"
+              action="action_digital_certificate"
+              sequence="10"/>
+
+    <menuitem id="menu_document_signature"
+              name="Chữ ký số"
+              parent="menu_digital_signature_root"
+              action="action_document_signature"
+              sequence="20"/>
+
+    <menuitem id="menu_document_approval"
+              name="Quy trình duyệt"
+              parent="menu_digital_signature_root"
+              action="action_document_approval"
+              sequence="30"/>
+
+    <record id="action_document_reminder" model="ir.actions.act_window">
+        <field name="name">Nhắc hạn văn bản</field>
+        <field name="res_model">om.document.reminder</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Chưa có nhắc hạn nào
+            </p>
+            <p>
+                Hệ thống tự động tạo nhắc hạn cho các văn bản sắp hết hiệu lực.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_document_history"
+              name="Lịch sử văn bản"
+              parent="menu_document_management_root"
+              action="action_document_history"
+              sequence="50"/>
+
+    <menuitem id="menu_document_reminder"
+              name="Nhắc hạn văn bản"
+              parent="menu_document_management_root"
+              action="action_document_reminder"
+              sequence="60"/>
+
+    <!-- Menu Dashboard -->
+    <menuitem id="menu_document_dashboard"
+              name="Dashboard"
+              parent="menu_document_management_root"
+              action="action_document_dashboard"
+              sequence="90"/>
+
+</odoo>
+

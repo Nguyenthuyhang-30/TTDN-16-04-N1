@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View - Danh sách lịch sử văn bản -->
+    <record id="view_document_history_tree" model="ir.ui.view">
+        <field name="name">om.document.history.tree</field>
+        <field name="model">om.document.history</field>
+        <field name="arch" type="xml">
+            <tree string="Lịch sử văn bản">
+                <field name="name"/>
+                <field name="document_id"/>
+                <field name="document_incoming_id"/>
+                <field name="user_id"/>
+                <field name="employee_id"/>
+                <field name="action"/>
+                <field name="field_name"/>
+                <field name="timestamp"/>
+                <field name="ip_address"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View - Form lịch sử văn bản -->
+    <record id="view_document_history_form" model="ir.ui.view">
+        <field name="name">om.document.history.form</field>
+        <field name="model">om.document.history</field>
+        <field name="arch" type="xml">
+            <form string="Lịch sử văn bản" create="0" edit="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="document_id" readonly="1"/>
+                            <field name="document_incoming_id" readonly="1"/>
+                            <field name="action" readonly="1"/>
+                            <field name="field_name" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="user_id" readonly="1"/>
+                            <field name="employee_id" readonly="1"/>
+                            <field name="timestamp" readonly="1"/>
+                            <field name="ip_address" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="old_value" readonly="1" widget="text"/>
+                        <field name="new_value" readonly="1" widget="text"/>
+                    </group>
+                    <group>
+                        <field name="notes" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_document_history_search" model="ir.ui.view">
+        <field name="name">om.document.history.search</field>
+        <field name="model">om.document.history</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm lịch sử văn bản">
+                <field name="name"/>
+                <field name="document_id"/>
+                <field name="document_incoming_id"/>
+                <field name="user_id"/>
+                <field name="employee_id"/>
+                <field name="action"/>
+                <filter string="Tạo mới" name="create" domain="[('action', '=', 'create')]"/>
+                <filter string="Cập nhật" name="update" domain="[('action', '=', 'update')]"/>
+                <filter string="Duyệt" name="approve" domain="[('action', '=', 'approve')]"/>
+                <filter string="Ký" name="sign" domain="[('action', '=', 'sign')]"/>
+            </search>
+        </field>
+    </record>
+</odoo>
+

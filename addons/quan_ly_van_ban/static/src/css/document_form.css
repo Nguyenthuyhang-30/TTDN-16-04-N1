@@ -1,0 +1,204 @@
+/* Modern Form Styling for Document Form */
+
+.modern-form .oe_title {
+    margin-bottom: 24px;
+}
+
+.modern-form .oe_title h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.modern-form .oe_title .text-muted {
+    color: #6c757d;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+/* Input Field Styling - Modern Box Style - High Priority */
+.modern-form .o_field_char input,
+.modern-form .o_field_text input,
+.modern-form .o_field_email input,
+.modern-form .o_field_phone input,
+.modern-form .o_field_integer input,
+.modern-form .o_field_float input,
+.modern-form .o_field_monetary input,
+.modern-form .o_field_date input,
+.modern-form .o_field_datetime input,
+.modern-form input[type="text"],
+.modern-form input[type="email"],
+.modern-form input[type="tel"],
+.modern-form input[type="number"],
+.modern-form input[type="date"],
+.modern-form input[type="datetime-local"],
+.modern-form .o_input {
+    border: 1px solid #d1d5db !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    transition: all 0.2s ease !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    min-height: 44px !important;
+    height: auto !important;
+}
+
+.modern-form .o_field_char input:focus,
+.modern-form .o_field_text input:focus,
+.modern-form .o_field_email input:focus,
+.modern-form .o_field_phone input:focus,
+.modern-form .o_field_integer input:focus,
+.modern-form .o_field_float input:focus,
+.modern-form .o_field_monetary input:focus,
+.modern-form .o_field_date input:focus,
+.modern-form .o_field_datetime input:focus,
+.modern-form input[type="text"]:focus,
+.modern-form input[type="email"]:focus,
+.modern-form input[type="tel"]:focus,
+.modern-form input[type="number"]:focus,
+.modern-form input[type="date"]:focus,
+.modern-form input[type="datetime-local"]:focus,
+.modern-form .o_input:focus {
+    border-color: #17a2b8 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.1) !important;
+    background-color: #ffffff !important;
+}
+
+.modern-form .o_field_char input::placeholder,
+.modern-form .o_field_text input::placeholder,
+.modern-form .o_field_email input::placeholder,
+.modern-form .o_field_phone input::placeholder,
+.modern-form .o_field_integer input::placeholder,
+.modern-form .o_field_float input::placeholder,
+.modern-form .o_field_date input::placeholder,
+.modern-form input::placeholder,
+.modern-form .o_input::placeholder {
+    color: #9ca3af !important;
+    opacity: 1 !important;
+}
+
+/* Many2one Field Styling */
+.modern-form .o_field_many2one .o_input_dropdown {
+    border: 1px solid #d1d5db !important;
+    border-radius: 8px !important;
+    padding: 0 !important;
+    font-size: 14px !important;
+    background-color: #ffffff !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.modern-form .o_field_many2one .o_input_dropdown input {
+    border: none !important;
+    border-radius: 8px 0 0 8px !important;
+    padding: 12px 16px !important;
+    min-height: 44px !important;
+}
+
+.modern-form .o_field_many2one .o_input_dropdown:focus-within {
+    border-color: #17a2b8 !important;
+    box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.1) !important;
+}
+
+.modern-form .o_field_many2one .o_external_button,
+.modern-form .o_field_many2one .fa-external-link {
+    background-color: #17a2b8 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 0 6px 6px 0 !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.modern-form .o_field_many2one .o_external_button:hover,
+.modern-form .o_field_many2one .fa-external-link:hover {
+    background-color: #138496 !important;
+}
+
+/* Date Field Styling */
+.modern-form .o_field_date .o_input {
+    border: 1px solid #d1d5db !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    background-color: #ffffff !important;
+    min-height: 44px !important;
+}
+
+.modern-form .o_field_date .o_input:focus {
+    border-color: #17a2b8 !important;
+    box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.1) !important;
+}
+
+/* Textarea styling */
+.modern-form .o_field_text textarea,
+.modern-form textarea {
+    border: 1px solid #d1d5db !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    background-color: #ffffff !important;
+    min-height: 100px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.modern-form .o_field_text textarea:focus,
+.modern-form textarea:focus {
+    border-color: #17a2b8 !important;
+    box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.1) !important;
+}
+
+/* Field Label Styling */
+.modern-form .o_field_widget label,
+.modern-form label {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+    margin-bottom: 8px !important;
+    display: block !important;
+}
+
+/* Required Field Indicator */
+.modern-form .o_required_modifier::after {
+    content: " *" !important;
+    color: #ef4444 !important;
+    font-weight: bold !important;
+}
+
+/* Field Container Spacing */
+.modern-form .o_field_widget {
+    margin-bottom: 20px !important;
+}
+
+.modern-form .o_group .o_group .o_field_widget {
+    margin-bottom: 20px !important;
+}
+
+/* Group Spacing */
+.modern-form .o_group {
+    margin-bottom: 24px !important;
+}
+
+/* Readonly fields styling */
+.modern-form .o_field_widget[readonly="1"] input,
+.modern-form input[readonly] {
+    background-color: #f9fafb !important;
+    border-color: #e5e7eb !important;
+    color: #6b7280 !important;
+}

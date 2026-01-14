@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_customer_user,qlkh.customer.user,model_qlkh_customer,base.group_user,1,1,1,1
+access_product_user,qlkh.product.user,model_qlkh_product,base.group_user,1,1,1,1
+access_order_user,qlkh.order.user,model_qlkh_order,base.group_user,1,1,1,1
+access_order_line_user,qlkh.order.line.user,model_qlkh_order_line,base.group_user,1,1,1,1
+access_customer_support_user,qlkh.customer.support.user,model_qlkh_customer_support,base.group_user,1,1,1,1
+access_email_notification_user,qlkh.email.notification.user,model_qlkh_email_notification,base.group_user,1,1,1,1
+access_customer_dashboard_user,qlkh.customer.dashboard.user,model_qlkh_customer_dashboard,base.group_user,1,1,1,1
+

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View - Danh sách nhắc hạn -->
+    <record id="view_document_reminder_tree" model="ir.ui.view">
+        <field name="name">om.document.reminder.tree</field>
+        <field name="model">om.document.reminder</field>
+        <field name="arch" type="xml">
+            <tree string="Nhắc hạn văn bản" decoration-warning="reminder_type=='30_days'" decoration-info="reminder_type=='7_days'" decoration-danger="reminder_type=='1_day'">
+                <field name="name"/>
+                <field name="document_id"/>
+                <field name="reminder_type" widget="badge" decoration-warning="reminder_type=='30_days'" decoration-info="reminder_type=='7_days'" decoration-danger="reminder_type=='1_day'"/>
+                <field name="days_remaining"/>
+                <field name="reminder_date"/>
+                <field name="notification_sent" widget="boolean_toggle"/>
+                <field name="email_sent" widget="boolean_toggle"/>
+                <field name="activity_created" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View - Form nhắc hạn -->
+    <record id="view_document_reminder_form" model="ir.ui.view">
+        <field name="name">om.document.reminder.form</field>
+        <field name="model">om.document.reminder</field>
+        <field name="arch" type="xml">
+            <form string="Nhắc hạn văn bản" class="modern-form">
+                <header>
+                    <button name="action_send_notifications" string="Gửi thông báo" type="object" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <!-- Section: Just the Essentials -->
+                    <div class="oe_title">
+                        <h2>Thông tin cơ bản</h2>
+                        <p class="text-muted">Đây là tất cả các trường thông tin cơ bản cho một nhắc hạn văn bản mới. Nếu bạn muốn thêm chi tiết, bạn có thể dễ dàng truy cập chúng bên dưới hoặc qua điều hướng bên.</p>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="document_id" placeholder="Chọn văn bản..." domain="[('status', 'in', ['approved', 'signed'])]" options="{'no_create': True, 'no_open': False}"/>
+                            <field name="reminder_type" placeholder="Chọn loại nhắc hạn..."/>
+                            <field name="days_remaining" readonly="1" placeholder="Số ngày còn lại"/>
+                            <field name="reminder_date" placeholder="Ngày nhắc hạn"/>
+                        </group>
+                        <group>
+                            <field name="notification_sent" widget="boolean_toggle"/>
+                            <field name="email_sent" widget="boolean_toggle"/>
+                            <field name="activity_created" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <group string="Người nhận thông báo">
+                        <field name="recipient_creator" widget="boolean_toggle"/>
+                        <field name="recipient_manager" widget="boolean_toggle"/>
+                        <field name="recipient_customer" widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_document_reminder_search" model="ir.ui.view">
+        <field name="name">om.document.reminder.search</field>
+        <field name="model">om.document.reminder</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm nhắc hạn">
+                <field name="name"/>
+                <field name="document_id"/>
+                <field name="reminder_type"/>
+                <filter string="Cảnh báo sớm (30 ngày)" name="30_days" domain="[('reminder_type', '=', '30_days')]"/>
+                <filter string="Khẩn cấp (7 ngày)" name="7_days" domain="[('reminder_type', '=', '7_days')]"/>
+                <filter string="Rất gấp (1 ngày)" name="1_day" domain="[('reminder_type', '=', '1_day')]"/>
+                <filter string="Chưa gửi thông báo" name="not_sent" domain="[('notification_sent', '=', False)]"/>
+                <filter string="Chưa gửi email" name="not_email" domain="[('email_sent', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+</odoo>
+

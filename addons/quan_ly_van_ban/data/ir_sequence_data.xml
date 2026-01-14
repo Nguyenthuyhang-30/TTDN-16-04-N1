@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sequence cho số văn bản đến -->
+    <record id="seq_document_incoming_number" model="ir.sequence">
+        <field name="name">Số văn bản đến</field>
+        <field name="code">document.incoming.number</field>
+        <field name="prefix">VBĐ</field>
+        <field name="padding">3</field>
+        <field name="number_increment">1</field>
+        <field name="number_next">1</field>
+    </record>
+
+    <!-- Sequence cho số văn bản đi -->
+    <record id="seq_document_outgoing_number" model="ir.sequence">
+        <field name="name">Số văn bản đi</field>
+        <field name="code">document.outgoing.number</field>
+        <field name="prefix">VBĐI</field>
+        <field name="padding">3</field>
+        <field name="number_increment">1</field>
+        <field name="number_next">1</field>
+    </record>
+</odoo>
+

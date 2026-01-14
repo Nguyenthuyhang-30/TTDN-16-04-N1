@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Action để mở danh sách chấm công -->
+    <!-- Load sau khi models đã được tạo từ views -->
+    <record id="action_attendance" model="ir.actions.act_window">
+        <field name="name">Chấm công</field>
+        <field name="res_model">om.hr.attendance</field>
+        <field name="view_mode">tree,form,calendar</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo chấm công đầu tiên
+            </p>
+            <p>
+                Quản lý chấm công của nhân viên: giờ vào, giờ ra, giờ nghỉ và số giờ làm việc.
+            </p>
+        </field>
+    </record>
+
+    <!-- Action để mở danh sách bảng lương -->
+    <record id="action_payroll" model="ir.actions.act_window">
+        <field name="name">Bảng lương</field>
+        <field name="res_model">om.hr.payroll</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo bảng lương đầu tiên
+            </p>
+            <p>
+                Quản lý bảng lương nhân viên: tính lương dựa trên số công, thưởng và phạt.
+            </p>
+        </field>
+    </record>
+</odoo>
+

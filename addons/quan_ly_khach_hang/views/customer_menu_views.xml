@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu chính cho Quản lý khách hàng -->
+    <menuitem id="menu_qlkh_root"
+              name="QLKH"
+              sequence="10"
+              web_icon="quan_ly_khach_hang,static/description/icon.png"/>
+
+    <!-- Menu Thông tin khách hàng -->
+    <menuitem id="menu_customer"
+              name="Thông tin khách hàng"
+              parent="menu_qlkh_root"
+              action="quan_ly_khach_hang.action_customer"
+              sequence="10"/>
+
+    <!-- Menu Chi tiết đơn hàng -->
+    <menuitem id="menu_order"
+              name="Chi tiết đơn hàng"
+              parent="menu_qlkh_root"
+              action="quan_ly_khach_hang.action_order"
+              sequence="20"/>
+
+    <!-- Menu Hỗ trợ khách hàng -->
+    <menuitem id="menu_customer_support"
+              name="Hỗ trợ khách hàng"
+              parent="menu_qlkh_root"
+              action="quan_ly_khach_hang.action_customer_support"
+              sequence="30"/>
+
+    <!-- Menu Chi tiết sản phẩm -->
+    <menuitem id="menu_product"
+              name="Chi tiết sản phẩm"
+              parent="menu_qlkh_root"
+              action="quan_ly_khach_hang.action_product"
+              sequence="40"/>
+
+    <!-- Action Bảng xếp hạng khách hàng -->
+    <record id="action_customer_ranking" model="ir.actions.act_window">
+        <field name="name">Bảng xếp hạng khách hàng</field>
+        <field name="res_model">qlkh.customer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{'search_default_has_orders': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Chưa có khách hàng nào
+            </p>
+            <p>
+                Bảng xếp hạng khách hàng theo mức độ mua hàng.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Thống kê hỗ trợ -->
+    <menuitem id="menu_support_statistics"
+              name="Thống kê hỗ trợ"
+              parent="menu_qlkh_root"
+              action="quan_ly_khach_hang.action_customer_support"
+              sequence="50"/>
+
+    <!-- Menu Bảng xếp hạng -->
+    <menuitem id="menu_customer_ranking"
+              name="Bảng xếp hạng"
+              parent="menu_qlkh_root"
+              action="quan_ly_khach_hang.action_customer_ranking"
+              sequence="60"/>
+
+    <!-- Menu Dashboard -->
+    <menuitem id="menu_customer_dashboard"
+              name="Dashboard"
+              parent="menu_qlkh_root"
+              action="action_customer_dashboard"
+              sequence="90"/>
+
+</odoo>
+

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Action để mở danh sách nhân viên -->
+    <record id="action_employee" model="ir.actions.act_window">
+        <field name="name">Nhân viên</field>
+        <field name="res_model">om.hr.employee</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo nhân viên đầu tiên
+            </p>
+            <p>
+                Quản lý thông tin nhân viên, phòng ban và các thông tin liên quan.
+            </p>
+        </field>
+    </record>
+
+    <!-- Action để mở danh sách phòng ban -->
+    <record id="action_department" model="ir.actions.act_window">
+        <field name="name">Phòng ban</field>
+        <field name="res_model">om.hr.department</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo phòng ban đầu tiên
+            </p>
+            <p>
+                Quản lý các phòng ban trong công ty.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu chính cho HR -->
+    <menuitem id="menu_hr_custom_root"
+              name="Nhân sự"
+              sequence="10"
+              web_icon="om_hr_custom,static/description/icon.png"/>
+
+    <!-- Menu Employees -->
+    <menuitem id="menu_hr_employee_custom"
+              name="Nhân viên"
+              parent="menu_hr_custom_root"
+              action="action_employee"
+              sequence="10"/>
+
+    <!-- Menu Departments -->
+    <menuitem id="menu_hr_department_custom"
+              name="Phòng ban"
+              parent="menu_hr_custom_root"
+              action="action_department"
+              sequence="20"/>
+
+    <!-- Menu Attendance -->
+    <menuitem id="menu_hr_attendance_custom"
+              name="Chấm công"
+              parent="menu_hr_custom_root"
+              action="om_hr_custom.action_attendance"
+              sequence="30"/>
+
+    <!-- Menu Payroll -->
+    <menuitem id="menu_hr_payroll_custom"
+              name="Bảng lương"
+              parent="menu_hr_custom_root"
+              action="om_hr_custom.action_payroll"
+              sequence="40"/>
+
+    <!-- Menu Contract -->
+    <menuitem id="menu_hr_contract_custom"
+              name="Hợp đồng làm việc"
+              parent="menu_hr_custom_root"
+              action="action_contract"
+              sequence="50"/>
+
+    <!-- Menu Dashboard -->
+    <menuitem id="menu_hr_dashboard"
+              name="Dashboard"
+              parent="menu_hr_custom_root"
+              action="action_hr_dashboard"
+              sequence="90"/>
+
+</odoo>

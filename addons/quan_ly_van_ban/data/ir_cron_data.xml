@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Cron Job: Quét văn bản sắp hết hạn (chạy hàng ngày 08:00) -->
+    <record id="ir_cron_check_expiring_documents" model="ir.cron">
+        <field name="name">Kiểm tra văn bản sắp hết hạn</field>
+        <field name="model_id" ref="model_om_document_outgoing"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_check_expiring_documents()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="True"/>
+        <field name="doall" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+    </record>
+</odoo>
+

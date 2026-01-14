@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dashboard View - Dashboard Quản lý văn bản -->
+    <record id="view_document_dashboard_form" model="ir.ui.view">
+        <field name="name">om.document.dashboard.form</field>
+        <field name="model">om.document.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Dashboard Quản lý văn bản" delete="0">
+                <field name="compute_trigger" invisible="1"/>
+                <field name="chart_outgoing_status_data" widget="text" invisible="1"/>
+                <field name="chart_incoming_status_data" widget="text" invisible="1"/>
+                <field name="chart_approval_data" widget="text" invisible="1"/>
+                <field name="chart_signature_data" widget="text" invisible="1"/>
+                <field name="chart_trend_data" widget="text" invisible="1"/>
+                <sheet>
+                    <div style="background: #f5f7fa; padding: 20px; min-height: 100vh;">
+                        <!-- Header -->
+                        <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <h1 style="margin: 0; font-size: 24px; font-weight: 600; color: #2c3e50;">Dashboard Quản lý văn bản</h1>
+                            <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 14px;">Tổng quan và phân tích dữ liệu văn bản</p>
+                        </div>
+
+                        <!-- Outgoing Documents -->
+                        <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <h3 style="margin: 0; font-size: 18px; font-weight: 600; color: #2c3e50;">📤 Văn bản đi</h3>
+                                <button name="action_view_outgoing" string="Xem tất cả" type="object" class="btn btn-sm" style="background: #667eea; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px;"/>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div style="padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; color: white; text-align: center;">
+                                        <h3 style="margin: 0; font-size: 32px; font-weight: 700;"><field name="total_outgoing"/></h3>
+                                        <p style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.9;">Tổng số</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div style="padding: 20px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 10px; color: white; text-align: center;">
+                                        <h3 style="margin: 0; font-size: 32px; font-weight: 700;"><field name="draft_outgoing"/></h3>
+                                        <p style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.9;">Nháp</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div style="padding: 20px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 10px; color: white; text-align: center;">
+                                        <h3 style="margin: 0; font-size: 32px; font-weight: 700;"><field name="pending_approval_outgoing"/></h3>
+                                        <p style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.9;">Chờ duyệt</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div style="padding: 20px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 10px; color: white; text-align: center;">
+                                        <h3 style="margin: 0; font-size: 32px; font-weight: 700;"><field name="approved_outgoing"/></h3>
+                                        <p style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.9;">Đã duyệt</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div style="padding: 20px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 10px; color: white; text-align: center;">
+                                        <h3 style="margin: 0; font-size: 32px; font-weight: 700;"><field name="signed_outgoing"/></h3>
+                                        <p style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.9;">Đã ký</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div style="padding: 20px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 10px; color: white; text-align: center;">
+                                        <h3 style="margin: 0; font-size: 32px; font-weight: 700;"><field name="sent_outgoing"/></h3>
+                                        <p style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.9;">Đã gửi</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Incoming Documents -->
+                        <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <h3 style="margin: 0; font-size: 18px; font-weight: 600; color: #2c3e50;">📥 Văn bản đến</h3>
+                                <button name="action_view_incoming" string="Xem tất cả" type="object" class="btn btn-sm" style="background: #11998e; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px;"/>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div style="padding: 25px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #667eea; text-align: center;">
+                                        <h3 style="margin: 0; font-size: 36px; font-weight: 700; color: #2c3e50;"><field name="total_incoming"/></h3>
+                                        <p style="margin: 10px 0 0 0; color: #7f8c8d; font-size: 14px; font-weight: 500;">Tổng số</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div style="padding: 25px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #f093fb; text-align: center;">
+                                        <h3 style="margin: 0; font-size: 36px; font-weight: 700; color: #2c3e50;"><field name="draft_incoming"/></h3>
+                                        <p style="margin: 10px 0 0 0; color: #7f8c8d; font-size: 14px; font-weight: 500;">Nháp</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div style="padding: 25px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #fa709a; text-align: center;">
+                                        <h3 style="margin: 0; font-size: 36px; font-weight: 700; color: #2c3e50;"><field name="processing_incoming"/></h3>
+                                        <p style="margin: 10px 0 0 0; color: #7f8c8d; font-size: 14px; font-weight: 500;">Đang xử lý</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div style="padding: 25px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #11998e; text-align: center;">
+                                        <h3 style="margin: 0; font-size: 36px; font-weight: 700; color: #2c3e50;"><field name="completed_incoming"/></h3>
+                                        <p style="margin: 10px 0 0 0; color: #7f8c8d; font-size: 14px; font-weight: 500;">Hoàn thành</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Approval and Signature -->
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col-md-6">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 100%;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                        <h3 style="margin: 0; font-size: 18px; font-weight: 600; color: #2c3e50;">✅ Quy trình duyệt</h3>
+                                        <button name="action_view_pending_approvals" string="Xem" type="object" class="btn btn-sm" style="background: #fa709a; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px;"/>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div style="padding: 20px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 10px; color: white; text-align: center;">
+                                                <h3 style="margin: 0; font-size: 36px; font-weight: 700;"><field name="pending_approvals"/></h3>
+                                                <p style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.9;">Chờ duyệt</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div style="padding: 20px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 10px; color: white; text-align: center;">
+                                                <h3 style="margin: 0; font-size: 36px; font-weight: 700;"><field name="approved_approvals"/></h3>
+                                                <p style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.9;">Đã duyệt</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div style="padding: 20px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 10px; color: white; text-align: center;">
+                                                <h3 style="margin: 0; font-size: 36px; font-weight: 700;"><field name="rejected_approvals"/></h3>
+                                                <p style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.9;">Từ chối</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 100%;">
+                                    <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">✍️ Chữ ký số</h3>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div style="padding: 20px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 10px; color: white; text-align: center;">
+                                                <h3 style="margin: 0; font-size: 36px; font-weight: 700;"><field name="pending_signatures"/></h3>
+                                                <p style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.9;">Chờ ký</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div style="padding: 20px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 10px; color: white; text-align: center;">
+                                                <h3 style="margin: 0; font-size: 36px; font-weight: 700;"><field name="signed_signatures"/></h3>
+                                                <p style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.9;">Đã ký</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div style="padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; color: white; text-align: center;">
+                                                <h3 style="margin: 0; font-size: 36px; font-weight: 700;"><field name="total_certificates"/></h3>
+                                                <p style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.9;">Chứng thư số</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts Section -->
+                        <div class="row" style="margin-top: 20px;">
+                            <div class="col-md-6">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                                    <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">📊 Văn bản đi theo trạng thái</h3>
+                                    <canvas id="chartOutgoing" style="max-height: 300px;"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                                    <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">📥 Văn bản đến theo trạng thái</h3>
+                                    <canvas id="chartIncoming" style="max-height: 300px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 20px;">
+                            <div class="col-md-4">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                                    <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">✅ Quy trình duyệt</h3>
+                                    <canvas id="chartApproval" style="max-height: 250px;"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                                    <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">✍️ Chữ ký số</h3>
+                                    <canvas id="chartSignature" style="max-height: 250px;"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                                    <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">📈 Xu hướng văn bản</h3>
+                                    <canvas id="chartTrend" style="max-height: 250px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action để mở Dashboard -->
+    <record id="action_document_dashboard" model="ir.actions.act_window">
+        <field name="name">Dashboard Quản lý văn bản</field>
+        <field name="res_model">om.document.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+        <field name="context">{'default_total_outgoing': 0}</field>
+    </record>
+
+</odoo>

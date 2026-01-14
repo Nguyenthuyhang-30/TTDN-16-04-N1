@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sequence cho mã nhân viên -->
+    <record id="seq_hr_employee_code" model="ir.sequence">
+        <field name="name">Mã nhân viên</field>
+        <field name="code">hr.employee.code</field>
+        <field name="prefix">NV</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+        <field name="number_next">1</field>
+    </record>
+
+    <!-- Sequence cho mã chấm công -->
+    <record id="seq_hr_attendance_code" model="ir.sequence">
+        <field name="name">Mã chấm công</field>
+        <field name="code">hr.attendance.code</field>
+        <field name="prefix">CC</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+        <field name="number_next">1</field>
+    </record>
+
+    <!-- Sequence cho mã bảng lương -->
+    <record id="seq_hr_payroll_code" model="ir.sequence">
+        <field name="name">Mã bảng lương</field>
+        <field name="code">hr.payroll.code</field>
+        <field name="prefix">BL</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+        <field name="number_next">1</field>
+    </record>
+
+    <!-- Sequence cho số hợp đồng -->
+    <record id="seq_hr_contract_number" model="ir.sequence">
+        <field name="name">Số hợp đồng</field>
+        <field name="code">hr.contract.number</field>
+        <field name="prefix">HD</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+        <field name="number_next">1</field>
+    </record>
+</odoo>
+

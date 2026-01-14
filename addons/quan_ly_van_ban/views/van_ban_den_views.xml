@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View - Danh sách văn bản đến -->
+    <record id="view_document_incoming_tree" model="ir.ui.view">
+        <field name="name">om.document.incoming.tree</field>
+        <field name="model">om.document.incoming</field>
+        <field name="arch" type="xml">
+            <tree string="Văn bản đến" decoration-info="status=='draft'" decoration-success="status=='completed'">
+                <field name="number" string="Số đến"/>
+                <field name="name" string="Số văn bản"/>
+                <field name="document_type_id" string="Loại văn bản"/>
+                <field name="date_received" string="Ngày nhận"/>
+                <field name="sender" string="Nơi gửi"/>
+                <field name="subject" string="Trích yếu"/>
+                <field name="status" string="Trạng thái" widget="badge" decoration-info="status=='draft'" decoration-success="status=='completed'"/>
+                <field name="priority" string="Ưu tiên" widget="priority"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View - Form văn bản đến -->
+    <record id="view_document_incoming_form" model="ir.ui.view">
+        <field name="name">om.document.incoming.form</field>
+        <field name="model">om.document.incoming</field>
+        <field name="arch" type="xml">
+            <form string="Văn bản đến" class="modern-form">
+                <header>
+                    <button name="action_received" string="Đã nhận" type="object" class="oe_highlight" invisible="status != 'draft'"/>
+                    <button name="action_processing" string="Đang xử lý" type="object" invisible="status not in ['received', 'draft']"/>
+                    <button name="action_completed" string="Hoàn thành" type="object" invisible="status != 'processing'"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,received,processing,completed" statusbar_clickable="1"/>
+                </header>
+                <sheet>
+                    <!-- Section: Just the Essentials -->
+                    <div class="oe_title">
+                        <h2>Thông tin cơ bản</h2>
+                        <p class="text-muted">Đây là tất cả các trường thông tin cơ bản cho một văn bản đến mới. Nếu bạn muốn thêm chi tiết, bạn có thể dễ dàng truy cập chúng bên dưới hoặc qua điều hướng bên.</p>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="number" placeholder="Nhập số văn bản..."/>
+                            <field name="name" placeholder="Nhập tên văn bản..."/>
+                            <field name="document_type_id" placeholder="Chọn loại văn bản..." options="{'no_create': True}"/>
+                            <field name="date_received" placeholder="Chọn ngày nhận"/>
+                            <field name="date_document" placeholder="Chọn ngày văn bản"/>
+                        </group>
+                        <group>
+                            <field name="priority" widget="priority"/>
+                            <field name="sender" placeholder="Nhập nơi gửi..."/>
+                            <field name="recipient" placeholder="Nhập nơi nhận..."/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="subject" placeholder="Nhập trích yếu văn bản..."/>
+                    </group>
+                    <notebook>
+                        <page string="Tệp đính kèm" name="attachments">
+                            <field name="attachment_ids" widget="many2many_binary"/>
+                        </page>
+                        <page string="Ghi chú" name="notes">
+                            <field name="notes" placeholder="Nhập ghi chú về văn bản..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_document_incoming_search" model="ir.ui.view">
+        <field name="name">om.document.incoming.search</field>
+        <field name="model">om.document.incoming</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm văn bản đến">
+                <field name="number"/>
+                <field name="name"/>
+                <field name="sender"/>
+                <field name="subject"/>
+                <field name="document_type_id"/>
+                <filter string="Nháp" name="draft" domain="[('status', '=', 'draft')]"/>
+                <filter string="Đã nhận" name="received" domain="[('status', '=', 'received')]"/>
+                <filter string="Đang xử lý" name="processing" domain="[('status', '=', 'processing')]"/>
+                <filter string="Hoàn thành" name="completed" domain="[('status', '=', 'completed')]"/>
+                <separator/>
+                <filter string="Khẩn cấp" name="urgent" domain="[('priority', '=', 'urgent')]"/>
+                <filter string="Cao" name="high" domain="[('priority', '=', 'high')]"/>
+            </search>
+        </field>
+    </record>
+</odoo>
+

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View - Danh sách hợp đồng -->
+    <record id="view_contract_tree" model="ir.ui.view">
+        <field name="name">om.hr.contract.tree</field>
+        <field name="model">om.hr.contract</field>
+        <field name="arch" type="xml">
+            <tree string="Hợp đồng làm việc" decoration-success="state == 'active'" decoration-muted="state == 'expired'" decoration-danger="state == 'cancelled'">
+                <field name="name" string="Số hợp đồng"/>
+                <field name="employee_id" string="Nhân viên"/>
+                <field name="contract_type" string="Loại hợp đồng"/>
+                <field name="start_date" string="Ngày bắt đầu"/>
+                <field name="end_date" string="Ngày kết thúc"/>
+                <field name="salary" string="Mức lương"/>
+                <field name="state" string="Trạng thái" widget="badge" decoration-success="state == 'active'" decoration-muted="state == 'expired'" decoration-danger="state == 'cancelled'"/>
+                <field name="days_remaining" string="Số ngày còn lại"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View - Form hợp đồng -->
+    <record id="view_contract_form" model="ir.ui.view">
+        <field name="name">om.hr.contract.form</field>
+        <field name="model">om.hr.contract</field>
+        <field name="arch" type="xml">
+            <form string="Hợp đồng làm việc" class="modern-form">
+                <header>
+                    <button name="action_activate" string="Kích hoạt" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_cancel" string="Hủy" type="object" invisible="state in ['cancelled', 'expired']"/>
+                    <button name="action_renew" string="Gia hạn" type="object" invisible="state != 'active'"/>
+                    <!-- Tạm thời comment button để tránh lỗi khi upgrade. Uncomment sau khi upgrade xong -->
+                    <!-- <button name="action_create_document" string="Tạo văn bản" type="object" class="oe_highlight"/> -->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,expired" statusbar_clickable="0"/>
+                </header>
+                <sheet>
+                    <!-- Section: Just the Essentials -->
+                    <div class="oe_title">
+                        <h2>Thông tin cơ bản</h2>
+                        <p class="text-muted">Đây là tất cả các trường thông tin cơ bản cho một hợp đồng làm việc mới. Nếu bạn muốn thêm chi tiết, bạn có thể dễ dàng truy cập chúng bên dưới hoặc qua điều hướng bên.</p>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Số hợp đồng (tự động)"/>
+                            <field name="employee_id" placeholder="Chọn nhân viên..." required="1" options="{'no_create': True}"/>
+                            <field name="contract_type" placeholder="Chọn loại hợp đồng..." required="1"/>
+                            <field name="job_title" placeholder="Nhập chức vụ..."/>
+                            <field name="department_id" placeholder="Chọn phòng ban..." options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="start_date" placeholder="Chọn ngày bắt đầu" required="1"/>
+                            <field name="end_date" placeholder="Chọn ngày kết thúc"/>
+                            <field name="signed_date" placeholder="Chọn ngày ký"/>
+                            <field name="salary" placeholder="Nhập mức lương..." required="1"/>
+                            <field name="days_remaining" readonly="1" placeholder="Số ngày còn lại"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <field name="contract_file" filename="contract_filename" widget="binary" placeholder="Tải lên file hợp đồng..."/>
+                        <field name="contract_filename" invisible="1"/>
+                    </group>
+                    
+                    <notebook>
+                        <!-- Tab Văn bản liên quan tạm thời bị comment để tránh lỗi khi upgrade. Uncomment sau khi upgrade xong -->
+                        <!-- <page string="Văn bản liên quan" name="documents">
+                            <field name="document_count" readonly="1"/>
+                            <field name="document_ids" nolabel="1">
+                                <tree>
+                                    <field name="number" string="Số đi"/>
+                                    <field name="name" string="Số văn bản"/>
+                                    <field name="document_type_id" string="Loại văn bản"/>
+                                    <field name="date_sent" string="Ngày gửi"/>
+                                    <field name="status" string="Trạng thái" widget="badge"/>
+                                    <field name="is_signed" widget="boolean_toggle"/>
+                                    <field name="is_approved" widget="boolean_toggle"/>
+                                </tree>
+                            </field>
+                        </page> -->
+                        <page string="Ghi chú" name="notes">
+                            <field name="notes" placeholder="Nhập ghi chú về hợp đồng..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View - Tìm kiếm hợp đồng -->
+    <record id="view_contract_search" model="ir.ui.view">
+        <field name="name">om.hr.contract.search</field>
+        <field name="model">om.hr.contract</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm hợp đồng">
+                <field name="name" string="Số hợp đồng"/>
+                <field name="employee_id" string="Nhân viên"/>
+                <field name="contract_type" string="Loại hợp đồng"/>
+                <filter string="Nháp" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Đang hiệu lực" name="active" domain="[('state', '=', 'active')]"/>
+                <filter string="Hết hạn" name="expired" domain="[('state', '=', 'expired')]"/>
+                <filter string="Đã hủy" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter string="Sắp hết hạn (30 ngày)" name="expiring_soon" domain="[('end_date', '&gt;=', context_today().strftime('%Y-%m-%d')), ('end_date', '&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Đã hết hạn" name="expired_filter" domain="[('end_date', '!=', False), ('end_date', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action để mở danh sách hợp đồng -->
+    <record id="action_contract" model="ir.actions.act_window">
+        <field name="name">Hợp đồng làm việc</field>
+        <field name="res_model">om.hr.contract</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo hợp đồng làm việc đầu tiên
+            </p>
+            <p>
+                Quản lý hợp đồng làm việc của nhân viên, theo dõi ngày bắt đầu, kết thúc và mức lương.
+            </p>
+        </field>
+    </record>
+
+</odoo>
+

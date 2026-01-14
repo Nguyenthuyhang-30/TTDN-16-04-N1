@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ai_config_user,ai.config.user,model_ai_config,base.group_user,1,1,1,1
+access_ai_document_summary_user,ai.document.summary.user,model_ai_document_summary,base.group_user,1,1,1,1
+access_ai_ocr_extraction_user,ai.ocr.extraction.user,model_ai_ocr_extraction,base.group_user,1,1,1,1
+access_ai_assistant_wizard_user,ai.assistant.wizard.user,model_ai_assistant_wizard,base.group_user,1,1,1,1
+access_google_calendar_sync_user,google.calendar.sync.user,model_google_calendar_sync,base.group_user,1,1,1,1
+

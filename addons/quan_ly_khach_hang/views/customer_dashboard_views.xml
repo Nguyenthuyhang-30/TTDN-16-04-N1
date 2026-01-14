@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dashboard View - Dashboard Quản lý khách hàng -->
+    <record id="view_customer_dashboard_form" model="ir.ui.view">
+        <field name="name">qlkh.customer.dashboard.form</field>
+        <field name="model">qlkh.customer.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Dashboard Quản lý khách hàng" delete="0">
+                <field name="compute_trigger" invisible="1"/>
+                <field name="chart_customer_status_data" widget="text" invisible="1"/>
+                <field name="chart_classification_data" widget="text" invisible="1"/>
+                <field name="chart_orders_data" widget="text" invisible="1"/>
+                <field name="chart_revenue_data" widget="text" invisible="1"/>
+                <field name="chart_combined_data" widget="text" invisible="1"/>
+                <field name="chart_achievement_data" widget="text" invisible="1"/>
+                <field name="chart_progress_data" widget="text" invisible="1"/>
+                <sheet>
+                    <div style="background: #f5f7fa; padding: 20px; min-height: 100vh;">
+                        <!-- Header -->
+                        <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <h1 style="margin: 0; font-size: 24px; font-weight: 600; color: #2c3e50;">Dashboard Quản lý khách hàng</h1>
+                            <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 14px;">Tổng quan và phân tích dữ liệu khách hàng</p>
+                        </div>
+
+                        <!-- KPI Cards Row 1 -->
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col-md-3">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 100%; border-left: 4px solid #667eea;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                                        <div>
+                                            <p style="margin: 0; color: #7f8c8d; font-size: 13px; font-weight: 500; text-transform: uppercase;">Tổng khách hàng</p>
+                                            <h2 style="margin: 10px 0 0 0; font-size: 32px; font-weight: 700; color: #2c3e50;"><field name="total_customers"/></h2>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">👥</div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; margin-top: 15px;">
+                                        <span style="background: #e8f5e9; color: #4caf50; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">+12%</span>
+                                        <span style="margin-left: 8px; color: #7f8c8d; font-size: 12px;">so với tháng trước</span>
+                                    </div>
+                                    <button name="action_view_customers" string="Xem chi tiết" type="object" class="btn btn-sm mt-2" style="margin-top: 15px; background: #667eea; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px;"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 100%; border-left: 4px solid #4facfe;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                                        <div>
+                                            <p style="margin: 0; color: #7f8c8d; font-size: 13px; font-weight: 500; text-transform: uppercase;">Khách hàng mới</p>
+                                            <h2 style="margin: 10px 0 0 0; font-size: 32px; font-weight: 700; color: #2c3e50;"><field name="new_customers"/></h2>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">✨</div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; margin-top: 15px;">
+                                        <span style="background: #e3f2fd; color: #2196f3; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">+8%</span>
+                                        <span style="margin-left: 8px; color: #7f8c8d; font-size: 12px;">tăng trưởng</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 100%; border-left: 4px solid #43e97b;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                                        <div>
+                                            <p style="margin: 0; color: #7f8c8d; font-size: 13px; font-weight: 500; text-transform: uppercase;">Khách hàng VIP</p>
+                                            <h2 style="margin: 10px 0 0 0; font-size: 32px; font-weight: 700; color: #2c3e50;"><field name="vip_customers"/></h2>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">⭐</div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; margin-top: 15px;">
+                                        <span style="background: #fff3e0; color: #ff9800; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">+15%</span>
+                                        <span style="margin-left: 8px; color: #7f8c8d; font-size: 12px;">tăng trưởng</span>
+                                    </div>
+                                    <button name="action_view_vip_customers" string="Xem" type="object" class="btn btn-sm mt-2" style="margin-top: 15px; background: #43e97b; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px;"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 100%; border-left: 4px solid #fa709a;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                                        <div>
+                                            <p style="margin: 0; color: #7f8c8d; font-size: 13px; font-weight: 500; text-transform: uppercase;">Tổng doanh thu</p>
+                                            <h2 style="margin: 10px 0 0 0; font-size: 28px; font-weight: 700; color: #2c3e50;"><field name="total_revenue" widget="monetary"/></h2>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">💰</div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; margin-top: 15px;">
+                                        <span style="background: #e8f5e9; color: #4caf50; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">+24%</span>
+                                        <span style="margin-left: 8px; color: #7f8c8d; font-size: 12px;">so với tháng trước</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KPI Cards Row 2 -->
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col-md-3">
+                                <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 100%;">
+                                    <p style="margin: 0 0 10px 0; color: #7f8c8d; font-size: 13px; font-weight: 500;">Tổng đơn hàng</p>
+                                    <h3 style="margin: 0; font-size: 28px; font-weight: 700; color: #2c3e50;"><field name="total_orders"/></h3>
+                                    <div style="margin-top: 10px; display: flex; align-items: center;">
+                                        <span style="color: #4caf50; font-size: 12px; font-weight: 600;">↑ 12%</span>
+                                    </div>
+                                    <button name="action_view_orders" string="Xem" type="object" class="btn btn-sm mt-2" style="margin-top: 12px; background: #f5f7fa; color: #667eea; border: 1px solid #e0e0e0; padding: 6px 12px; border-radius: 6px; font-size: 12px;"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 100%;">
+                                    <p style="margin: 0 0 10px 0; color: #7f8c8d; font-size: 13px; font-weight: 500;">Đơn hàng nháp</p>
+                                    <h3 style="margin: 0; font-size: 28px; font-weight: 700; color: #2c3e50;"><field name="draft_orders"/></h3>
+                                    <div style="margin-top: 10px; display: flex; align-items: center;">
+                                        <span style="color: #f44336; font-size: 12px; font-weight: 600;">↓ 5%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 100%;">
+                                    <p style="margin: 0 0 10px 0; color: #7f8c8d; font-size: 13px; font-weight: 500;">Đơn hàng mới</p>
+                                    <h3 style="margin: 0; font-size: 28px; font-weight: 700; color: #2c3e50;"><field name="confirmed_orders"/></h3>
+                                    <div style="margin-top: 10px; display: flex; align-items: center;">
+                                        <span style="color: #4caf50; font-size: 12px; font-weight: 600;">↑ 18%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 100%;">
+                                    <p style="margin: 0 0 10px 0; color: #7f8c8d; font-size: 13px; font-weight: 500;">Đơn hàng hoàn thành</p>
+                                    <h3 style="margin: 0; font-size: 28px; font-weight: 700; color: #2c3e50;"><field name="completed_orders"/></h3>
+                                    <div style="margin-top: 10px; display: flex; align-items: center;">
+                                        <span style="color: #4caf50; font-size: 12px; font-weight: 600;">↑ 22%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Classification Section -->
+                        <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 20px;">
+                            <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">📊 Phân loại khách hàng</h3>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div style="padding: 20px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 10px; color: white; text-align: center;">
+                                        <h3 style="margin: 0; font-size: 36px; font-weight: 700;"><field name="high_potential"/></h3>
+                                        <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;">Tiềm năng cao</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="padding: 20px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 10px; color: white; text-align: center;">
+                                        <h3 style="margin: 0; font-size: 36px; font-weight: 700;"><field name="low_potential"/></h3>
+                                        <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;">Tiềm năng thấp</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="padding: 20px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 10px; color: white; text-align: center;">
+                                        <h3 style="margin: 0; font-size: 36px; font-weight: 700;"><field name="regular_customers"/></h3>
+                                        <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;">Khách hàng thường</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Support Section -->
+                        <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                            <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">🎧 Hỗ trợ khách hàng</h3>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #667eea;">
+                                        <p style="margin: 0 0 10px 0; color: #7f8c8d; font-size: 13px; font-weight: 500;">Tổng yêu cầu</p>
+                                        <h3 style="margin: 0; font-size: 32px; font-weight: 700; color: #2c3e50;"><field name="total_support"/></h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #fa709a;">
+                                        <p style="margin: 0 0 10px 0; color: #7f8c8d; font-size: 13px; font-weight: 500;">Đang xử lý</p>
+                                        <h3 style="margin: 0; font-size: 32px; font-weight: 700; color: #2c3e50;"><field name="pending_support"/></h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #11998e;">
+                                        <p style="margin: 0 0 10px 0; color: #7f8c8d; font-size: 13px; font-weight: 500;">Đã giải quyết</p>
+                                        <h3 style="margin: 0; font-size: 32px; font-weight: 700; color: #2c3e50;"><field name="resolved_support"/></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts Section -->
+                        <div class="row" style="margin-top: 20px;">
+                            <div class="col-md-6">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                                    <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">📊 Trạng thái khách hàng</h3>
+                                    <canvas id="chartCustomerStatus" style="max-height: 300px;"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                                    <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">📈 Phân loại khách hàng</h3>
+                                    <canvas id="chartClassification" style="max-height: 300px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 20px;">
+                            <div class="col-md-8">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                        <h3 style="margin: 0; font-size: 18px; font-weight: 600; color: #2c3e50;">📊 Đơn hàng &amp; Doanh thu</h3>
+                                        <button class="btn btn-sm" style="background: #ffc107; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px;">Actions</button>
+                                    </div>
+                                    <canvas id="chartCombined" style="max-height: 350px;"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                        <h3 style="margin: 0; font-size: 18px; font-weight: 600; color: #2c3e50;">💰 Thành tích</h3>
+                                        <span style="font-size: 14px; color: #7f8c8d;">⚙️ ⋮</span>
+                                    </div>
+                                    <div style="position: relative; width: 100%; height: 200px;">
+                                        <canvas id="chartAchievement" style="max-height: 200px;"></canvas>
+                                        <div id="achievementText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
+                                            <div style="font-size: 14px; color: #7f8c8d; margin-bottom: 5px;">Percent</div>
+                                            <div id="achievementPercent" style="font-size: 32px; font-weight: 700; color: #2c3e50;">0</div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                            <span style="color: #ff9800; font-weight: 600;" id="progressSpendingPercent">0%</span>
+                                            <span style="color: #7f8c8d; font-size: 12px;">Spendings Target</span>
+                                        </div>
+                                        <div style="width: 100%; height: 8px; background: #e0e0e0; border-radius: 4px; overflow: hidden;">
+                                            <div id="progressSpendingBar" style="height: 100%; background: linear-gradient(90deg, #ff9800, #ffc107); width: 0%; transition: width 0.5s;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 20px;">
+                            <div class="col-md-6">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                                    <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">📊 Thống kê đơn hàng</h3>
+                                    <canvas id="chartOrders" style="max-height: 300px;"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                                    <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">📈 Xu hướng doanh thu</h3>
+                                    <canvas id="chartRevenue" style="max-height: 300px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bars Section -->
+                        <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-top: 20px;">
+                            <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #2c3e50;">🎯 Mục tiêu</h3>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div style="margin-bottom: 20px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                            <span style="color: #2c3e50; font-weight: 500;">Doanh thu</span>
+                                            <span id="progressIncomePercent" style="color: #f44336; font-weight: 600;">0%</span>
+                                        </div>
+                                        <div style="width: 100%; height: 10px; background: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                            <div id="progressIncomeBar" style="height: 100%; background: linear-gradient(90deg, #f44336, #ff5722); width: 0%; transition: width 0.5s;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div style="margin-bottom: 20px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                            <span style="color: #2c3e50; font-weight: 500;">Đơn hàng</span>
+                                            <span id="progressOrdersPercent" style="color: #4caf50; font-weight: 600;">0%</span>
+                                        </div>
+                                        <div style="width: 100%; height: 10px; background: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                            <div id="progressOrdersBar" style="height: 100%; background: linear-gradient(90deg, #4caf50, #8bc34a); width: 0%; transition: width 0.5s;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div style="margin-bottom: 20px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                            <span style="color: #2c3e50; font-weight: 500;">Khách hàng</span>
+                                            <span id="progressCustomersPercent" style="color: #ff9800; font-weight: 600;">0%</span>
+                                        </div>
+                                        <div style="width: 100%; height: 10px; background: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                            <div id="progressCustomersBar" style="height: 100%; background: linear-gradient(90deg, #ff9800, #ffc107); width: 0%; transition: width 0.5s;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div style="margin-bottom: 20px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                            <span style="color: #2c3e50; font-weight: 500;">Hỗ trợ</span>
+                                            <span id="progressSupportPercent" style="color: #2196f3; font-weight: 600;">0%</span>
+                                        </div>
+                                        <div style="width: 100%; height: 10px; background: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                                            <div id="progressSupportBar" style="height: 100%; background: linear-gradient(90deg, #2196f3, #03a9f4); width: 0%; transition: width 0.5s;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action để mở Dashboard -->
+    <record id="action_customer_dashboard" model="ir.actions.act_window">
+        <field name="name">Dashboard Quản lý khách hàng</field>
+        <field name="res_model">qlkh.customer.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+        <field name="context">{'default_total_customers': 0}</field>
+    </record>
+
+</odoo>

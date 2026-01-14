@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Email Template: Nhắc hạn văn bản sắp hết hiệu lực -->
+    <!-- Lưu ý: Cần module 'mail' được cài đặt -->
+    <record id="email_template_document_expiry_reminder" model="mail.template">
+        <field name="name">Nhắc hạn văn bản sắp hết hiệu lực</field>
+        <field name="model_id" ref="model_om_document_outgoing"/>
+        <field name="subject">[Nhắc hạn] ${object.name} sắp hết hiệu lực</field>
+        <field name="email_from">${(object.create_uid.email_formatted or user.email_formatted)}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p>Xin chào ${object.create_uid.name or 'Quý khách'},</p>
+                <p>Văn bản sau đây sẽ hết hiệu lực trong <strong>${object.reminder_ids and object.reminder_ids[0].days_remaining or 'N/A'} ngày</strong>:</p>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 10px;"><strong>Tên văn bản:</strong> ${object.name}</li>
+                    <li style="margin-bottom: 10px;"><strong>Số hiệu:</strong> ${object.number}</li>
+                    <li style="margin-bottom: 10px;"><strong>Ngày hết hạn:</strong> ${object.expiry_date.strftime('%d/%m/%Y') if object.expiry_date else 'N/A'}</li>
+                    <li style="margin-bottom: 10px;"><strong>Khách hàng:</strong> ${object.customer_id.name if object.customer_id else 'N/A'}</li>
+                </ul>
+                <p>Vui lòng kiểm tra và thực hiện gia hạn nếu cần thiết.</p>
+                <div style="margin-top: 20px;">
+                    <a href="${object.get_base_url()}/web#id=${object.id}&amp;model=om.document.outgoing&amp;view_type=form" 
+                       style="background-color: #875A7B; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin-right: 10px;">
+                        Xem văn bản
+                    </a>
+                </div>
+                <p style="margin-top: 30px;">Trân trọng,<br/><strong>Hệ thống quản lý văn bản</strong></p>
+            </div>
+        </field>
+    </record>
+
+    <!-- Email Template: Mời khách hàng ký văn bản -->
+    <record id="email_template_customer_sign_request" model="mail.template">
+        <field name="name">Mời khách hàng ký văn bản</field>
+        <field name="model_id" ref="model_om_document_signature"/>
+        <field name="subject">Yêu cầu ký văn bản: ${object.document_id.name}</field>
+        <field name="email_from">${(object.document_id.create_uid.email_formatted or user.email_formatted)}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p>Xin chào ${object.customer_name or 'Quý khách'},</p>
+                <p>Chúng tôi cần bạn ký số văn bản sau:</p>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 10px;"><strong>Tên văn bản:</strong> ${object.document_id.name}</li>
+                    <li style="margin-bottom: 10px;"><strong>Số hiệu:</strong> ${object.document_id.number}</li>
+                    <li style="margin-bottom: 10px;"><strong>Loại văn bản:</strong> ${object.document_id.document_type_id.name if object.document_id.document_type_id else 'N/A'}</li>
+                    <li style="margin-bottom: 10px;"><strong>Ngày hiệu lực:</strong> ${object.document_id.effective_date.strftime('%d/%m/%Y') if object.document_id.effective_date else 'N/A'}</li>
+                    <li style="margin-bottom: 10px;"><strong>Ngày hết hạn:</strong> ${object.document_id.expiry_date.strftime('%d/%m/%Y') if object.document_id.expiry_date else 'N/A'}</li>
+                </ul>
+                <p>Vui lòng click vào link bên dưới để ký số văn bản:</p>
+                <div style="margin-top: 20px; margin-bottom: 20px;">
+                    <a href="${object.sign_link or '#'}" 
+                       style="background-color: #875A7B; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; display: inline-block; font-size: 16px;">
+                        Ký số văn bản
+                    </a>
+                </div>
+                <p class="text-muted" style="color: #666; font-size: 12px;">
+                    Link này sẽ hết hạn vào: ${object.sign_link_expiry.strftime('%d/%m/%Y %H:%M') if object.sign_link_expiry else 'N/A'}
+                </p>
+                <p>Nếu bạn không tạo yêu cầu này, vui lòng bỏ qua email này.</p>
+                <p style="margin-top: 30px;">Trân trọng,<br/><strong>${object.document_id.create_uid.name or 'Hệ thống quản lý văn bản'}</strong></p>
+            </div>
+        </field>
+    </record>
+</odoo>
+

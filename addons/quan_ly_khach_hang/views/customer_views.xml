@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View - Danh sách khách hàng -->
+    <record id="view_customer_tree" model="ir.ui.view">
+        <field name="name">qlkh.customer.tree</field>
+        <field name="model">qlkh.customer</field>
+        <field name="arch" type="xml">
+            <tree string="Khách hàng" decoration-success="status == 'vip'" decoration-info="status == 'new'">
+                <field name="name" string="Tên khách hàng"/>
+                <field name="phone" string="Số điện thoại"/>
+                <field name="email"/>
+                <field name="company" string="Công ty"/>
+                <field name="classification" string="Phân loại khách hàng"/>
+                <field name="status" string="Trạng thái khách hàng"/>
+                <field name="purchase_count" string="Số lần mua hàng"/>
+                <field name="total_spent" string="Tổng tiền đã chi tiêu"/>
+                <field name="create_date" string="Ngày tạo"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View - Form khách hàng -->
+    <record id="view_customer_form" model="ir.ui.view">
+        <field name="name">qlkh.customer.form</field>
+        <field name="model">qlkh.customer</field>
+        <field name="arch" type="xml">
+            <form string="Khách hàng" class="modern-form">
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="new,old,vip" statusbar_clickable="1"/>
+                </header>
+                <sheet>
+                    <!-- Section: Just the Essentials -->
+                    <div class="oe_title">
+                        <h2>Thông tin cơ bản</h2>
+                        <p class="text-muted">Đây là tất cả các trường thông tin cơ bản cho một bản ghi khách hàng mới. Nếu bạn muốn thêm chi tiết, bạn có thể dễ dàng truy cập chúng bên dưới hoặc qua điều hướng bên.</p>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Nhập tên khách hàng..."/>
+                            <field name="phone" placeholder="Nhập số điện thoại..."/>
+                            <field name="email" placeholder="Nhập email..."/>
+                            <field name="company" placeholder="Nhập tên công ty..."/>
+                        </group>
+                        <group>
+                            <field name="purchase_count" readonly="1" placeholder="Số lần mua hàng"/>
+                            <field name="total_spent" readonly="1" placeholder="Tổng tiền đã chi tiêu"/>
+                            <field name="create_date" readonly="1" placeholder="Ngày tạo"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Section: Phân loại khách hàng -->
+                    <div class="oe_title" style="margin-top: 32px;">
+                        <h2>Phân loại khách hàng</h2>
+                        <p class="text-muted">Chọn phân loại khách hàng để quản lý và theo dõi hiệu quả hơn. Phân loại này giúp xác định tiềm năng và chiến lược tiếp cận phù hợp.</p>
+                    </div>
+                    <group>
+                        <field name="classification" widget="radio" class="radio-card-group" options="{'horizontal': false}"/>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Đơn hàng" name="orders">
+                            <field name="order_ids" readonly="1">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="order_date"/>
+                                    <field name="total_amount"/>
+                                    <field name="state" widget="badge"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Hỗ trợ" name="support">
+                            <field name="support_ids" readonly="1">
+                                <tree>
+                                    <field name="contact_method"/>
+                                    <field name="start_time"/>
+                                    <field name="end_time"/>
+                                    <field name="state" widget="badge"/>
+                                    <field name="customer_rating"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View - Tìm kiếm khách hàng -->
+    <record id="view_customer_search" model="ir.ui.view">
+        <field name="name">qlkh.customer.search</field>
+        <field name="model">qlkh.customer</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm khách hàng">
+                <field name="name" string="Tên khách hàng"/>
+                <field name="phone" string="Số điện thoại"/>
+                <field name="email"/>
+                <field name="company" string="Công ty"/>
+                <filter string="Mới" name="new" domain="[('status', '=', 'new')]"/>
+                <filter string="Cũ" name="old" domain="[('status', '=', 'old')]"/>
+                <filter string="VIP" name="vip" domain="[('status', '=', 'vip')]"/>
+                <separator/>
+                <filter string="Tiềm năng cao" name="high_potential" domain="[('classification', '=', 'high_potential')]"/>
+                <filter string="Tiềm năng thấp" name="low_potential" domain="[('classification', '=', 'low_potential')]"/>
+                <separator/>
+                <filter string="Có đơn hàng" name="has_orders" domain="[('purchase_count', '&gt;', 0)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action để mở danh sách khách hàng -->
+    <record id="action_customer" model="ir.actions.act_window">
+        <field name="name">Thông tin khách hàng</field>
+        <field name="res_model">qlkh.customer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo khách hàng đầu tiên
+            </p>
+            <p>
+                Quản lý thông tin khách hàng, đơn hàng và hỗ trợ.
+            </p>
+        </field>
+    </record>
+
+</odoo>
+
+
