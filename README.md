@@ -293,9 +293,9 @@ Truy cập hệ thống tại: **http://localhost:8069**
 
 | Thông tin | Chi tiết |
 |-----------|----------|
-| **Họ và tên** | Phạm Thị Hồng Ngọc |
-| **Số điện thoại** | 0395888778 |
-| **Email** | phamnogc887@gmail.com |
+| **Họ và tên** | Nguyễn Thuý Hằng|
+| **Số điện thoại** | 0986972513 |
+| **Email** | nguyenthuyhang.qc2004@gmail.com |
 
 </div>
 
